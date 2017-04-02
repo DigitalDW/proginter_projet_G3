@@ -1,3 +1,38 @@
 <head>
   <title>Project_toDo</title>
+      	<meta charset="UTF-8">
+		<!-- la police-->
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet"> 
+
+		<!-- ici on reliera le CSS -->
+		<link rel="stylesheet" type="text/css" href="">
+		
 </head>
+
+<body> <!-- les champs pour ajouter évenements et tâches-->
+		<header>
+			<input type="text" placeholder="Entrez un évènement" id="champevent">
+			<button id="ajoutereven">Ajoutez</button>
+		</header>
+
+		<header>
+			<input type="text" placeholder="Entrez une tâche" id="champtache">
+			<button id="ajoutertache">Ajoutez</button>
+		</header>
+		<!-- container pour événements et tâches-->
+		<div class="container evenements">
+		
+			<ul class="todo" id="even"></ul>
+		</div>
+
+		<div class="container tâches">
+			<!-- Tâche icomplètes-->
+			<ul class="todo" id="incomplet"></ul>
+
+			<!-- Tâches accomplies-->
+			<ul class="todo" id="accompli"></ul>
+		</div>
+
+		<!-- JavaScripts -->
+		<script src="qqch.js"></script>
+	</body>
