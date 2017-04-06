@@ -10,35 +10,25 @@
 </head>
 
 <body> <!-- les champs pour ajouter évenements et tâches-->
-		<header>
-			<input type="text" placeholder="Entrez un évènement" id="champevent">
-			<button id="ajoutereven">Ajoutez</button>
-		</header>
+	<header id="mainbody">
+		{{>main}}
+	</header>
+	<header id="form">
+		{{>formulaire}}
+	</header>
+</body>
 
-		<header>
-			<input type="text" placeholder="Entrez une tâche" id="champtache">
-			<button id="ajoutertache">Ajoutez</button>
-		</header>
-		<!-- container pour événements et tâches-->
-		<div class="container evenements">
-		
-			<ul class="evenements" id="even"></ul>
+<!-- création des templates pour remplire les headers -->
+<template name="main">
+	<h1>{{titreM}}</h1>
+	<p style={{styleM}}>{{description}}</p>
+	<button>{{bouton}}</button>
+</template>
 
-			<div class="container tâches">
-			<!-- Tâche icomplètes-->
-			<ul class="todo" id="incomplet"></ul>
-
-			<!-- Tâches accomplies-->
-			<ul class="todo" id="accompli"></ul>
-			</div>
-
-		</div>
-
-		<div class="container archives">
-			<!-- Archivages des evenements-->
-			<ul class="arch" id="archives"></ul>
-		</div>
-
-		<!-- JavaScripts -->
-		<script src="qqch.js"></script>
-	</body>
+<template name="formulaire">
+	<h1>{{titreF}}</h1>
+	<h3>{{nomE}}</h3>
+	<input type="text" placeholder={{PH}}>
+	<button class="bt1">{{creerE}}</button>
+	<button class="bt2">{{annuler}}</button>
+</template>
