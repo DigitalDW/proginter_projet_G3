@@ -15,6 +15,7 @@
 	</header>
 	<header id="form">
 		{{>formulaire}}
+		{{>cancel}}
 	</header>
 </body>
 
@@ -28,7 +29,10 @@
 <template name="formulaire">
 	<h1>{{titreF}}</h1>
 	<h3>{{nomE}}</h3>
-	<input type="text" placeholder={{PH}}>
-	<button class="bt1">{{creerE}}</button>
-	<button class="bt2">{{annuler}}</button>
+	<input type="text" id="in1" placeholder={{PH}}>
+	<button id="bt1">{{creerE}}</button>
+</template>
+
+<template name="cancel">
+	<button id="bt2">{{annuler}}</button>
 </template>

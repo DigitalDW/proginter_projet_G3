@@ -3,6 +3,8 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
+import '../imports/api/event.js';
+
 //création des textes pour le header "mainbody"
 Template.main.helpers({
 	'titreM': function(){
@@ -43,25 +45,36 @@ Template.formulaire.helpers({
 	},
 	'creerE': function(){
 		return 'Valider et créer';
-	},
-	'annuler': function(){
-		return 'annuler';
 	}
 });
 
-//événement sur le deuxième header (ne fonctionne pas encore)
+//le bouton annuler
+Template.cancel.helpers({
+	'annuler': function(){
+		return 'Annuler'
+	}
+});
+
+//événement sur le bouton "annuler"
+Template.cancel.events({
+	'click button': function(){
+		console.log("You clicked on the 3rd button");
+		let header = document.getElementById("mainbody");
+		header.style.cssText="visibility:visible; position:absolute;";
+		let formul = document.getElementById("form");
+		formul.style.cssText="visibility:hidden; position: absolute;";
+	}
+});
+
+//événement sur le deuxième header + ajouter un événement à la BD
 Template.formulaire.events({
 	'click button': function(){
-		if(this.class=="bt1"){
-			console.log("You clicked on the 2nd button");
-			let formul = document.getElementById("form");
-			formul.style.cssText="visibility:hidden; position: absolute;";
-		}else{
-			console.log("You clicked on the 3rd button");
-			let header = document.getElementById("mainbody");
-			header.style.cssText="visibility:visible; position:absolute;";
-			let formul = document.getElementById("form");
-			formul.style.cssText="visibility:hidden; position: absolute;";
-		}
+		console.log("You clicked on the 2nd button");
+		let formul = document.getElementById("form");
+		formul.style.cssText="visibility:hidden; position: absolute;";
+		let input1 = document.getElementById("in1");
+		Events.insert({
+			name: input1
+		});
 	}
 });
