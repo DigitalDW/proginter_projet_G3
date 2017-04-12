@@ -14,9 +14,6 @@ Template.main.helpers({
   'description': function(){
     return 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae repellat architecto corrupti dolorum cumque iusto rerum ipsam dolorem odit sed ducimus sit maiores deserunt doloribus asperiores quasi, saepe aliquam. Quia.';
   },
-  'styleM': function(){
-    return '"width:350px;text-align:justify;"'
-  },
   'bouton': function(){
     return 'Créer un événement';
   }
