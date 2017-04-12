@@ -8,31 +8,3 @@
 		<link rel="stylesheet" type="text/css" href="">
 		
 </head>
-
-<body> <!-- les champs pour ajouter évenements et tâches-->
-	<header id="mainbody">
-		{{>main}}
-	</header>
-	<header id="form">
-		{{>formulaire}}
-		{{>cancel}}
-	</header>
-</body>
-
-<!-- création des templates pour remplire les headers -->
-<template name="main">
-	<h1>{{titreM}}</h1>
-	<p style={{styleM}}>{{description}}</p>
-	<button>{{bouton}}</button>
-</template>
-
-<template name="formulaire">
-	<h1>{{titreF}}</h1>
-	<h3>{{nomE}}</h3>
-	<input type="text" id="in1" placeholder={{PH}}>
-	<button id="bt1">{{creerE}}</button>
-</template>
-
-<template name="cancel">
-	<button id="bt2">{{annuler}}</button>
-</template>

@@ -1,0 +1,25 @@
+<body> <!-- les champs pour ajouter évenements et tâches-->
+	<header id="mainbody">
+		{{>main}}
+	</header>
+	<header id="form">
+		{{>formulaire}}
+	</header>
+</body>
+
+<!-- création des templates pour remplire les headers -->
+<template name="main">
+	<h1>{{titreM}}</h1>
+	<p style={{styleM}}>{{description}}</p>
+	<button>{{bouton}}</button>
+</template>
+
+<template name="formulaire">
+	<h1>{{titreF}}</h1>
+	<h3>{{nomE}}</h3>
+	<p>{{desc}}</p>
+	<form class="new-event">
+        <input type="text" name="text" placeholder="Type to add a new event" />
+     </form>
+	<button id="bt1">{{annuler}}</button>
+</template>
