@@ -1,10 +1,10 @@
-#form{
+#form, #evenement{
 	visibility: hidden;
 }
 body{
 
 }
-#mainbody, #form{
+#mainbody, #form, #evenement{
 	position: absolute;
 	left:15%;
 	margin : 0 auto;

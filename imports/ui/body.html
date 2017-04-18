@@ -5,9 +5,12 @@
 	<header id="form">
 		{{>formulaire}}
 	</header>
+		<header id="evenement">
+		{{>evenement}}
+	</header>
 </body>
 
-<!-- création des templates pour remplire les headers -->
+<!-- création des templates pour remplir les headers -->
 <template name="main">
 	<h1>{{titreM}}</h1>
 	<p>{{description}}</p>
@@ -22,4 +25,12 @@
         <input type="text" name="text" placeholder="Type to add a new event" />
      </form>
 	<button id="bt1">{{annuler}}</button>
+</template>
+
+
+<template name="evenement">
+	
+	<h3>{{titreEv}}</h3>
+	
+	
 </template>
