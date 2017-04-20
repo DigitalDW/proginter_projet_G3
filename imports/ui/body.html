@@ -24,10 +24,20 @@
 	<form class="new-event">
         <input type="text" name="text" placeholder="Type to add a new event" />
      </form>
-	<button id="bt1">{{annuler}}</button>
+	<button>{{annuler}}</button>
 </template>
 
 
 <template name="evenement">
 	<h1>{{titreEv}}</h1>
+	<button class="bt1">{{add}}</button>
+	<ul>
+		{{#each tasks}}
+        	{{> task}}
+      	{{/each}}
+	</ul>
+</template>
+
+<template name="task">
+	<li>{{text}}</li>
 </template>

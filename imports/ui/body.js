@@ -6,6 +6,8 @@ import './body.html';
 
 import { ReactiveVar } from 'meteor/reactive-var';
 
+var ex;
+
 //création des textes pour le header "mainbody"
 Template.main.helpers({
   'titreM': function(){
@@ -73,6 +75,8 @@ Template.formulaire.events({
     });
     target.text.value = '';
 
+    Session.set('titreEv', name);
+
     let formul = document.getElementById("form");
     formul.style.cssText="visibility:hidden; position: absolute;"; 
 
@@ -80,13 +84,16 @@ Template.formulaire.events({
     // et ensuite on le rend visible
 
     let evenement = document.getElementById('evenement');
-
     evenement.style.visibility = 'visible';
   },
 });
 
 Template.evenement.helpers({
   'titreEv': function(){
-    
+    let test = Session.get('titreEv');
+    return test;
+  },
+  'add': function(){
+    return 'ajouter une tâche'
   }
 });
