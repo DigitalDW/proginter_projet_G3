@@ -8,29 +8,32 @@
 	<header id="evenement">
 		{{>evenement}}
 	</header>
+	<header id="form2">
+		{{>formulaire2}}
+	</header>
 </body>
 
 <!-- création des templates pour remplir les headers -->
 <template name="main">
-	<h1>{{titreM}}</h1>
-	<p>{{description}}</p>
-	<button>{{bouton}}</button>
+	<h1>Description</h1>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et velit voluptatem ad tempora quia incidunt nisi repellat in ipsa praesentium dolor deserunt suscipit non expedita, debitis nobis iusto dolore delectus.</p>
+	<button>Créer un événement</button>
 </template>
 
 <template name="formulaire">
-	<h1>{{titreF}}</h1>
-	<h3>{{nomE}}</h3>
-	<p>{{desc}}</p>
+	<h1>Ajouter un évenement</h1>
+	<p>Vous voulez créer un événement et gérer son organisation? Rien de plus simple! Il suffit d'un nom! Entrez un nom et appuyez sur la touche "Entrée" pour créer votre propre événement!</p>
+	<h3>Entrez le nom</h3>
 	<form class="new-event">
         <input type="text" name="text" placeholder="Type to add a new event" />
      </form>
-	<button>{{annuler}}</button>
+	<button>annuler</button>
 </template>
 
 
 <template name="evenement">
 	<h1>{{titreEv}}</h1>
-	<button class="bt1">{{add}}</button>
+	<button class="bt1">Ajouter une tâche</button>
 	<ul>
 		{{#each tasks}}
         	{{> task}}
@@ -40,4 +43,20 @@
 
 <template name="task">
 	<li>{{text}}</li>
+</template>
+
+<template name="formulaire2">
+	<h1>Ajouter une tâche</h1>
+	<form class="new-task">
+		<h4>Entrez le nom de la tâche</h4>
+		<input type="text" name="nomT">
+		<h4>Entrez une courte description de la tâche</h4>
+		<input type="text" name="descT">
+		<h4>Sélectionnez le type de tâche</h4>
+		<select name="typeT" id="form-type">
+			<option value="normal">simple tâche</option>
+			<option value="checklict">checklist</option>
+		</select>
+		<button class="effect">Ajouter</button>
+	</form>
 </template>

@@ -1,11 +1,11 @@
-#form, #evenement{
-	visibility: hidden;
+#form, #evenement, #form2{
+	visibility: visible;
 }
 body{
 
 }
-#mainbody, #form, #evenement{
-	position: absolute;
+#mainbody, #form, #evenement, #form2{
+	position: relative;
 	left:15%;
 	margin : 0 auto;
 	border : 2px solid black;

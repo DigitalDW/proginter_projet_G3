@@ -6,21 +6,6 @@ import './body.html';
 
 import { ReactiveVar } from 'meteor/reactive-var';
 
-var ex;
-
-//création des textes pour le header "mainbody"
-Template.main.helpers({
-  'titreM': function(){
-    return 'Description';
-  },
-  'description': function(){
-    return 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae repellat architecto corrupti dolorum cumque iusto rerum ipsam dolorem odit sed ducimus sit maiores deserunt doloribus asperiores quasi, saepe aliquam. Quia.';
-  },
-  'bouton': function(){
-    return 'Créer un événement';
-  }
-});
-
 //événement du click sur le bouton -> effacer le header actuel et afficher l'autre header
 Template.main.events({
   'click button': function(){
@@ -35,23 +20,8 @@ Template.main.events({
   }
 });
 
-//création du deuxième formulaire
-Template.formulaire.helpers({
-  'titreF': function(){
-    return 'Création événement';
-  },
-  'nomE': function(){
-    return 'Nom';
-  },
-  'annuler': function(){
-    return 'Annuler'
-  },
-  'desc': function(){
-    return 'Vous voulez créer un événement et gérer son organisation? Rien de plus simple! Entrez un nom et appuyez sur la touche "Entrée" pour créer votre propre événement!'
-  }
-});
-
 //événement sur le deuxième header + ajouter un événement à la BD
+//@Radisa: events sert à ajouter des events (donc des comportements, comme un addEventListener) à un template
 Template.formulaire.events({
   'click button': function(){
     let header = document.getElementById("mainbody");
@@ -75,6 +45,7 @@ Template.formulaire.events({
     });
     target.text.value = '';
 
+    //création d'une session pour "importer" la valeur du nom de l'événement dans le titre de la page
     Session.set('titreEv', name);
 
     let formul = document.getElementById("form");
@@ -92,8 +63,14 @@ Template.evenement.helpers({
   'titreEv': function(){
     let test = Session.get('titreEv');
     return test;
-  },
-  'add': function(){
-    return 'ajouter une tâche'
+  }
+});
+
+Template.evenement.events({
+  'click button': function(){
+    let header = document.getElementById("evenement");
+    header.style.cssText="visibility:hidden; position:absolute;";
+    let formul = document.getElementById("form2");
+    formul.style.cssText="visibility:visible; position: absolute;";
   }
 });
