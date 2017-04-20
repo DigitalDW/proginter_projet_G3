@@ -6,6 +6,7 @@ import './body.html';
 
 import { ReactiveVar } from 'meteor/reactive-var';
 
+//j'ai enlevé les helpers car les codes n'étaient jamais utilisés de façon réactive, donc aucun intérêt de les définir dans le JS
 //événement du click sur le bouton -> effacer le header actuel et afficher l'autre header
 Template.main.events({
   'click button': function(){
