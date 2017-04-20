@@ -30,9 +30,6 @@ Template.main.events({
     // j'ai parametré la visibilité du 3e écran... dans la suite aussi
     let evenement =document.getElementById("evenement");
     evenement.style.cssText="visibility:hidden; position:absolute;";
-
-   
-
   }
 });
 
@@ -53,14 +50,12 @@ Template.formulaire.helpers({
 });
 
 //événement sur le deuxième header + ajouter un événement à la BD
-Template.formulaire.events({ // expliquer . events que fait-il ?
-  'click button': function(){ // as-tu une raison particulière d'avoir laissé cet espace dans la clé
+Template.formulaire.events({
+  'click button': function(){
     let header = document.getElementById("mainbody");
-    header.style.cssText="visibility:hidden; position:absolute;";
+    header.style.cssText="visibility:visible; position:absolute;";
     let formul = document.getElementById("form");
     formul.style.cssText="visibility:hidden; position: absolute;";
-    let evenement =document.getElementById("evenement");
-    evenement.style.cssText="visibility:visible; position:absolute;";
 
 
   }, // expliquer cette construction ci-dessous.
@@ -90,33 +85,8 @@ Template.formulaire.events({ // expliquer . events que fait-il ?
   },
 });
 
-Template.body.helpers({
-  event() {
-    return Events.find({});
-  },
-
-});
-
-// nouveau template evenenment dans body html pour afficher le nouveau écran événement
-// je continue sur ta logique de copier-coller des events ()
-Template.evenement.events(
-{
-  'click button': function()
-  {
-    console.log("You clicked on the 1st button");
-
-    let header = document.getElementById("mainbody");
-
-    header.style.cssText="visibility:hidden; position:absolute;";
-
-    let formul = document.getElementById("form");
-
-    formul.style.cssText="visibility:visible; position: absolute;";
-
-    let evenement =document.getElementById("evenement");
-
-    evenement.style.cssText="visibility:visible; position:absolute;";
-
+Template.evenement.helpers({
+  'titreEv': function(){
+    
   }
-}
-);
+});
