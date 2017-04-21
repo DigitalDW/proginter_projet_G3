@@ -5,3 +5,7 @@ Meteor.startup(() => {
 });
 
 import '../imports/api/event.js';
+
+import '../imports/api/task.js';
+
+

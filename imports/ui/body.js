@@ -1,6 +1,8 @@
 import { Template } from 'meteor/templating';
  
 import { Events } from '../api/event.js';
+
+import { Tasks } from '../api/task.js';
  
 import './body.html';
 
@@ -20,7 +22,8 @@ Template.main.events({
     evenement.style.cssText="visibility:hidden; position:absolute;";
   }
 });
-
+var evenementID;
+var taskID;
 //événement sur le deuxième header + ajouter un événement à la BD
 //@Radisa: events sert à ajouter des events (donc des comportements, comme un addEventListener) à un template
 Template.formulaire.events({
@@ -31,7 +34,7 @@ Template.formulaire.events({
     formul.style.cssText="visibility:hidden; position: absolute;";
 
 
-  }, // expliquer cette construction ci-dessous.
+  }, // expliquer cette construction ci-dessous. --> la même que le tutoriel officiel de meteor
   'submit .new-event'(event) {
     event.preventDefault();
 
@@ -41,13 +44,14 @@ Template.formulaire.events({
     console.log(event);
 
     // appel de l'objet BD pour insérer l'événement
-    Events.insert({
+    evenementID = Events.insert({
       name,
     });
     target.text.value = '';
 
     //création d'une session pour "importer" la valeur du nom de l'événement dans le titre de la page
     Session.set('titreEv', name);
+    Session.set('eventID', evenementID);
 
     let formul = document.getElementById("form");
     formul.style.cssText="visibility:hidden; position: absolute;"; 
@@ -73,5 +77,26 @@ Template.evenement.events({
     header.style.cssText="visibility:hidden; position:absolute;";
     let formul = document.getElementById("form2");
     formul.style.cssText="visibility:visible; position: absolute;";
+  }
+});
+
+Template.formulaire2.events({
+  'submit form': function(event){
+    event.preventDefault();
+    let nom = event.target.nomT.value;
+    let desc = event.target.descT.value;
+    let type = event.target.typeT.value;
+    let fk = Session.get('eventID');
+    let status = "2";
+    taskID = Tasks.insert({
+      nom,
+      desc,
+      type,
+      fk,
+      status
+    });
+    event.target.nomT.value = "";
+    event.target.descT.value = "";
+    event.target.typeT.value = "normal";
   }
 });
