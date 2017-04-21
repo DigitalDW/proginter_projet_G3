@@ -81,6 +81,12 @@ Template.evenement.events({
     header.style.cssText="visibility:hidden; position:absolute;";
     let formul = document.getElementById("form2");
     formul.style.cssText="visibility:visible; position: absolute;";
+  },
+  'click .tache': function(){
+    var tacheID = this._id;
+    Session.set('currentTask', tacheID);
+    var currentTaskw = Session.get('currentTask');
+    console.log(currentTaskw);
   }
 });
 
