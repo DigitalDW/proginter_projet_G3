@@ -68,7 +68,11 @@ Template.evenement.helpers({
   'titreEv': function(){
     let test = Session.get('titreEv');
     return test;
-  }
+  },
+  tasks() {
+    let currentEv = Session.get('eventID');
+    return Tasks.find( {fk: currentEv}, { nom: 1 } );
+  },
 });
 
 Template.evenement.events({
@@ -98,5 +102,12 @@ Template.formulaire2.events({
     event.target.nomT.value = "";
     event.target.descT.value = "";
     event.target.typeT.value = "normal";
+  },
+  'click .end': function(){
+    let header = document.getElementById("evenement");
+    header.style.cssText="visibility:visible; position:absolute;";
+    let formul = document.getElementById("form2");
+    formul.style.cssText="visibility:hidden; position: absolute;";
+    return false;
   }
 });

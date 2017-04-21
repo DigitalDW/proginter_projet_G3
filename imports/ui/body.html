@@ -33,16 +33,16 @@
 
 <template name="evenement">
 	<h1>{{titreEv}}</h1>
-	<button class="bt1">Ajouter une tâche</button>
 	<ul>
 		{{#each tasks}}
         	{{> task}}
       	{{/each}}
 	</ul>
+	<button class="bt1">Ajouter une tâche</button>
 </template>
 
 <template name="task">
-	<li>{{text}}</li>
+	<li>{{nom}}</li>
 </template>
 
 <template name="formulaire2">
@@ -58,5 +58,6 @@
 			<option value="checklist">checklist</option>
 		</select>
 		<button class="effect">Ajouter</button>
+		<button class="end">Terminé</button>
 	</form>
 </template>
