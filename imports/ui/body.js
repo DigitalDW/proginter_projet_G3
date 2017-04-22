@@ -71,7 +71,7 @@ Template.evenement.helpers({
   },
   tasks() {
     let currentEv = Session.get('eventID');
-    return Tasks.find( {fk: currentEv}, { nom: 1 } );
+    return Tasks.find( {fk: currentEv, status: { $ne: 0 } }, { nom: 1 } );
   },
 });
 
@@ -83,10 +83,16 @@ Template.evenement.events({
     formul.style.cssText="visibility:visible; position: absolute;";
   },
   'click .tache': function(){
-    var tacheID = this._id;
+    let tacheID = this._id;
     Session.set('currentTask', tacheID);
-    var currentTaskw = Session.get('currentTask');
-    console.log(currentTaskw);
+    let tacheName = this.nom;
+    Session.set('currentTaskName', tacheName);
+    let tacheDesc = this.desc;
+    Session.set('currentTaskDesc', tacheDesc);
+    let header = document.getElementById("evenement");
+    header.style.cssText="visibility:hidden; position:absolute;";
+    let formul = document.getElementById("task");
+    formul.style.cssText="visibility:visible; position: absolute;";
   }
 });
 
@@ -97,7 +103,7 @@ Template.formulaire2.events({
     let desc = event.target.descT.value;
     let type = event.target.typeT.value;
     let fk = Session.get('eventID');
-    let status = "2";
+    let status = 2;
     taskID = Tasks.insert({
       nom,
       desc,
@@ -115,5 +121,39 @@ Template.formulaire2.events({
     let formul = document.getElementById("form2");
     formul.style.cssText="visibility:hidden; position: absolute;";
     return false;
+  }
+});
+
+Template.tâche.helpers({
+  'titleT': function(){
+    return Session.get('currentTaskName')
+  },
+  'descriT': function(){
+    return Session.get('currentTaskDesc')
+  }
+});
+
+Template.tâche.events({
+  'click .cancel': function(){
+    let header = document.getElementById("evenement");
+    header.style.cssText="visibility:visible; position:absolute;";
+    let formul = document.getElementById("task");
+    formul.style.cssText="visibility:hidden; position: absolute;";
+  },
+  'click .doing': function(){
+    let cT = Session.get('currentTask');
+    Tasks.update( { _id: cT }, { $set: { status: 1 } } );
+  },
+  'click .done': function(){
+    let cT = Session.get('currentTask');
+    Tasks.update( { _id: cT }, { $set: { status: 0 } } );
+    let header = document.getElementById("evenement");
+    header.style.cssText="visibility:visible; position:absolute;";
+    let formul = document.getElementById("task");
+    formul.style.cssText="visibility:hidden; position: absolute;";
+  },
+  'click .reset': function(){
+    let cT = Session.get('currentTask');
+    Tasks.update( { _id: cT }, { $set: { status: 2 } } );
   }
 });

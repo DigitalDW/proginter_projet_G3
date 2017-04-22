@@ -11,6 +11,9 @@
 	<header id="form2">
 		{{>formulaire2}}
 	</header>
+	<header id="task">
+		{{>tâche}}
+	</header>
 </body>
 
 <!-- création des templates pour remplir les headers -->
@@ -58,6 +61,15 @@
 			<option value="checklist">checklist</option>
 		</select>
 		<button class="effect">Ajouter</button>
-		<button class="end">Terminé</button>
 	</form>
+	<button class="end">Terminé</button>
+</template>
+
+<template name="tâche">
+	<h1>{{titleT}}</h1>
+	<p>{{descriT}}</p>
+	<button class="reset">pas faite</button>
+	<button class="doing">en cours</button>
+	<button class="done">fini</button>
+	<button class="cancel">retour</button>
 </template>
