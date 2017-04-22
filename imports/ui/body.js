@@ -64,17 +64,20 @@ Template.formulaire.events({
   },
 });
 
+//création de la page de l'événement: on récupère la valeur de la session "titreEv" pour faire correspondre le titre
 Template.evenement.helpers({
   'titreEv': function(){
     let test = Session.get('titreEv');
     return test;
   },
+  //affichage des tâches (on récupère le nom dans la BD en spécifiant que la forreign key de la tâche doit correspondre à l'id de l'événement actuel et on n'affiche que les tâches qui sont "en cours" (status: 1) ou simplement pas faite (status 2), donc tout sauf "faite" (status: 0))
   tasks() {
     let currentEv = Session.get('eventID');
     return Tasks.find( {fk: currentEv, status: { $ne: 0 } }, { nom: 1 } );
   },
 });
 
+//events
 Template.evenement.events({
   'click button': function(){
     let header = document.getElementById("evenement");
@@ -82,6 +85,7 @@ Template.evenement.events({
     let formul = document.getElementById("form2");
     formul.style.cssText="visibility:visible; position: absolute;";
   },
+  //au clique sur une tâche, on récupère les valeur id, nom et desc de la tâche sur laquelle on appuie et on charge le template "tâche"
   'click .tache': function(){
     let tacheID = this._id;
     Session.set('currentTask', tacheID);
@@ -96,14 +100,18 @@ Template.evenement.events({
   }
 });
 
+//formulaire d'ajout de tâche, formulation similaire mais différente de l'ajout d'un event à la BD
 Template.formulaire2.events({
   'submit form': function(event){
     event.preventDefault();
+    //récupération des valeurs
     let nom = event.target.nomT.value;
     let desc = event.target.descT.value;
     let type = event.target.typeT.value;
+    //valeurs pas défaut
     let fk = Session.get('eventID');
     let status = 2;
+    //ajout à la BD
     taskID = Tasks.insert({
       nom,
       desc,
@@ -111,10 +119,13 @@ Template.formulaire2.events({
       fk,
       status
     });
+    //reset des valeurs dans les champs et dans le choix multiple
     event.target.nomT.value = "";
     event.target.descT.value = "";
     event.target.typeT.value = "normal";
+    alert('Tâche ajoutée. Vous pouvez en ajouter une autre, ou appuyer sur "terminé" pour revenir à la page précédente')
   },
+  //retour à la page "evenement" une fois que l'utilisateur a fini
   'click .end': function(){
     let header = document.getElementById("evenement");
     header.style.cssText="visibility:visible; position:absolute;";
@@ -124,6 +135,7 @@ Template.formulaire2.events({
   }
 });
 
+//page des tâches -> récupération du titre et de la description
 Template.tâche.helpers({
   'titleT': function(){
     return Session.get('currentTaskName')
@@ -133,17 +145,21 @@ Template.tâche.helpers({
   }
 });
 
+//events sur les tâches: changement de statut
 Template.tâche.events({
+  //retour en arrière
   'click .cancel': function(){
     let header = document.getElementById("evenement");
     header.style.cssText="visibility:visible; position:absolute;";
     let formul = document.getElementById("task");
     formul.style.cssText="visibility:hidden; position: absolute;";
   },
+  //changement en "en cours" (status: 1)
   'click .doing': function(){
     let cT = Session.get('currentTask');
     Tasks.update( { _id: cT }, { $set: { status: 1 } } );
   },
+  //changement en "fait" (status: 0)
   'click .done': function(){
     let cT = Session.get('currentTask');
     Tasks.update( { _id: cT }, { $set: { status: 0 } } );
@@ -152,6 +168,7 @@ Template.tâche.events({
     let formul = document.getElementById("task");
     formul.style.cssText="visibility:hidden; position: absolute;";
   },
+  //annulation des changement de statut (status: 2)
   'click .reset': function(){
     let cT = Session.get('currentTask');
     Tasks.update( { _id: cT }, { $set: { status: 2 } } );
