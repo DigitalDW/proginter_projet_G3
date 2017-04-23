@@ -60,6 +60,11 @@
 			<option value="normal">simple tâche</option>
 			<option value="checklist">checklist</option>
 		</select>
+		<br>
+		{{#if checklisted}}
+			<input type="number" id="cli" class="cli" placeholder="entrez le nombre d'éléments souhaités">
+			<div id="champs"></div>
+		{{/if}}
 		<button class="effect">Ajouter</button>
 	</form>
 	<button class="end">Terminé</button>
@@ -68,8 +73,20 @@
 <template name="tâche">
 	<h1>{{titleT}}</h1>
 	<p>{{descriT}}</p>
-	<button class="reset">pas faite</button>
-	<button class="doing">en cours</button>
-	<button class="done">fini</button>
+	{{#if cl}}
+		<ul>
+			{{#each lists}}
+				{{>list}}
+			{{/each}}
+		</ul>
+	{{else}}
+		<button class="reset">pas faite</button>
+		<button class="doing">en cours</button>
+		<button class="done">fini</button>
+	{{/if}}
 	<button class="cancel">retour</button>
+</template>
+
+<template name="list">
+	<li class="clElement">{{cl}}</li>
 </template>

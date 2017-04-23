@@ -3,6 +3,8 @@ import { Template } from 'meteor/templating';
 import { Events } from '../api/event.js';
 
 import { Tasks } from '../api/task.js';
+
+import { Checklists } from '../api/checklist.js';
  
 import './body.html';
 
@@ -100,9 +102,44 @@ Template.evenement.events({
   }
 });
 
+Template.formulaire2.onCreated(function(){
+  this.checklisted = new ReactiveVar( false );
+  Session.set('checklisted',false);
+});
+
+Template.formulaire2.helpers({
+  checklisted: function(){
+    return Template.instance().checklisted.get();
+  }
+})
 //formulaire d'ajout de tâche, formulation similaire mais différente de l'ajout d'un event à la BD
 Template.formulaire2.events({
-  'submit form': function(event){
+  'change select': function( event, template ){
+    if( $(event.target).val() == "checklist"){
+      template.checklisted.set(true);
+      Session.set('checklisted',true);
+    }else{
+      template.checklisted.set(false);
+      Session.set('checklisted',false);
+    }
+  },
+  'input #cli': function(event,template){
+    event.preventDefault();
+
+    var number = event.currentTarget.value;
+    Session.set('cln',number);
+    let champs = document.getElementById("champs");
+    for(let i=1;i<=number;i++){
+      let d = document.createElement("input");
+      let b = document.createElement("br");
+      d.setAttribute("type","text");
+      d.setAttribute("placeholder","nom");
+      d.setAttribute("id","cl"+i);
+      champs.appendChild(d);
+      champs.appendChild(b);
+    }
+  },
+  'submit form': function(event,template){
     event.preventDefault();
     //récupération des valeurs
     let nom = event.target.nomT.value;
@@ -119,10 +156,26 @@ Template.formulaire2.events({
       fk,
       status
     });
+
+    let cln = Session.get('cln');
+    let checklist = Session.get('checklisted');
+    let stat = 1;
+    if(checklist){
+      for(let i=1;i<=cln;i++){
+        console.log("hey");
+        let cl = document.getElementById("cl"+i).value;
+        Checklists.insert({
+          cl,
+          stat,
+          taskID
+        });
+      }
+    }
     //reset des valeurs dans les champs et dans le choix multiple
     event.target.nomT.value = "";
     event.target.descT.value = "";
     event.target.typeT.value = "normal";
+    template.checklisted.set(false);
     alert('Tâche ajoutée. Vous pouvez en ajouter une autre, ou appuyer sur "terminé" pour revenir à la page précédente')
   },
   //retour à la page "evenement" une fois que l'utilisateur a fini
