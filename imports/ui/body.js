@@ -76,7 +76,7 @@ Template.evenement.helpers({
   tasks() {
     let currentEv = Session.get('eventID');
     return Tasks.find( {fk: currentEv, status: { $ne: 0 } }, { nom: 1 } );
-  },
+  }
 });
 
 //events
@@ -95,6 +95,8 @@ Template.evenement.events({
     Session.set('currentTaskName', tacheName);
     let tacheDesc = this.desc;
     Session.set('currentTaskDesc', tacheDesc);
+    let tacheType = this.type;
+    Session.set('currentTaskType', tacheType);
     let header = document.getElementById("evenement");
     header.style.cssText="visibility:hidden; position:absolute;";
     let formul = document.getElementById("task");
@@ -195,6 +197,20 @@ Template.tâche.helpers({
   },
   'descriT': function(){
     return Session.get('currentTaskDesc')
+  },
+  isAChecklist: function(){
+    let taskType = Session.get('currentTaskType');
+    if(taskType == "checklist"){
+      isAChecklist = true;
+    }else{
+      isAChecklist = false;
+    }
+    return isAChecklist;
+  },
+  //affichage des listes (on récupère le nom dans la BD en spécifiant que la forreign key de la liste doit correspondre à l'id de la tâche actuelle)
+  lists() {
+    let currentT = Session.get('currentTask');
+    return Checklists.find( {taskID: currentT, stat: { $ne: 0 } }, { cl: 1 } );
   }
 });
 
@@ -225,5 +241,13 @@ Template.tâche.events({
   'click .reset': function(){
     let cT = Session.get('currentTask');
     Tasks.update( { _id: cT }, { $set: { status: 2 } } );
+  },
+  'click .clElement': function(){
+    let nom = this.cl;
+    let currentList = this._id;
+    let conf = confirm("Vous occupez-vous de l'objet suivant: "+nom+" ?");
+    if(conf == true){
+      Checklists.update( { _id: currentList }, { $set: { stat: 0 } } );
+    }
   }
 });

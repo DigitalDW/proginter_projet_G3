@@ -73,7 +73,7 @@
 <template name="tâche">
 	<h1>{{titleT}}</h1>
 	<p>{{descriT}}</p>
-	{{#if cl}}
+	{{#if isAChecklist}}
 		<ul>
 			{{#each lists}}
 				{{>list}}
@@ -82,8 +82,8 @@
 	{{else}}
 		<button class="reset">pas faite</button>
 		<button class="doing">en cours</button>
-		<button class="done">fini</button>
 	{{/if}}
+	<button class="done">fini</button>
 	<button class="cancel">retour</button>
 </template>
 
