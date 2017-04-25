@@ -12,7 +12,7 @@
 		{{>formulaire2}}
 	</header>
 	<header id="task">
-		{{>tâche}}
+		{{>tache}}
 	</header>
 </body>
 
@@ -38,14 +38,15 @@
 	<h1>{{titreEv}}</h1>
 	<ul>
 		{{#each tasks}}
-        	{{> task}}
+        	{{>task}}
       	{{/each}}
 	</ul>
 	<button class="bt1">Ajouter une tâche</button>
 </template>
 
 <template name="task">
-	<li class="tache">{{nom}}</li>
+<!-- j'essaye de créer une condition ici pour meteor mais ça ne marche pas -->
+	<li class="tache" {{# if checkStatus status }}class="orange"{{/if}} data-status="{{status}}">{{nom}}</li>
 </template>
 
 <template name="formulaire2">
@@ -70,7 +71,7 @@
 	<button class="end">Terminé</button>
 </template>
 
-<template name="tâche">
+<template name="tache">
 	<h1>{{titleT}}</h1>
 	<p>{{descriT}}</p>
 	{{#if isAChecklist}}

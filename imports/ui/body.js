@@ -20,7 +20,7 @@ Template.main.events({
     let formul = document.getElementById("form");
     formul.style.cssText="visibility:visible; position: absolute;";
     // j'ai parametré la visibilité du 3e écran... dans la suite aussi
-    let evenement =document.getElementById("evenement");
+    let evenement = document.getElementById("evenement");
     evenement.style.cssText="visibility:hidden; position:absolute;";
   }
 });
@@ -72,10 +72,18 @@ Template.evenement.helpers({
     let test = Session.get('titreEv');
     return test;
   },
-  //affichage des tâches (on récupère le nom dans la BD en spécifiant que la forreign key de la tâche doit correspondre à l'id de l'événement actuel et on n'affiche que les tâches qui sont "en cours" (status: 1) ou simplement pas faite (status 2), donc tout sauf "faite" (status: 0))
+  //affichage des tâches (on récupère le nom dans la BD en spécifiant que la forreign key de 
+  //la tâche doit correspondre à l'id de l'événement actuel et on n'affiche que les tâches qui sont 
+  //"en cours" (status: 1) ou simplement pas faite (status 2), donc tout sauf "faite" (status: 0))
   tasks() {
     let currentEv = Session.get('eventID');
-    return Tasks.find( {fk: currentEv, status: { $ne: 0 } }, { nom: 1 } );
+    let tasks = Tasks.find( {fk: currentEv, status: { $ne: 0 } }, { nom: 1, status: 1 } );
+
+    console.log(tasks);
+    return tasks;
+  },
+
+    }
   }
 });
 
@@ -191,7 +199,7 @@ Template.formulaire2.events({
 });
 
 //page des tâches -> récupération du titre et de la description
-Template.tâche.helpers({
+Template.tache.helpers({
   'titleT': function(){
     return Session.get('currentTaskName')
   },
@@ -215,37 +223,52 @@ Template.tâche.helpers({
 });
 
 //events sur les tâches: changement de statut
-Template.tâche.events({
+Template.tache.events({
   //retour en arrière
   'click .cancel': function(){
     let header = document.getElementById("evenement");
-    header.style.cssText="visibility:visible; position:absolute;";
+    header.style.cssText = "visibility:visible; position:absolute;";
+
     let formul = document.getElementById("task");
-    formul.style.cssText="visibility:hidden; position: absolute;";
+    formul.style.cssText = "visibility:hidden; position: absolute;";
   },
   //changement en "en cours" (status: 1)
   'click .doing': function(){
     let cT = Session.get('currentTask');
     Tasks.update( { _id: cT }, { $set: { status: 1 } } );
+// je récupère l'élément task
+    let task = document.getElementById("task");
+
+    let titre = task.querySelector("h1");
+
+    titre.style.background = "orange";
+
   },
   //changement en "fait" (status: 0)
   'click .done': function(){
     let cT = Session.get('currentTask');
     Tasks.update( { _id: cT }, { $set: { status: 0 } } );
+
     let header = document.getElementById("evenement");
-    header.style.cssText="visibility:visible; position:absolute;";
+    header.style.cssText = "visibility:visible; position:absolute;";
+
     let formul = document.getElementById("task");
-    formul.style.cssText="visibility:hidden; position: absolute;";
+    formul.style.cssText = "visibility:hidden; position: absolute;";
+
+    
+
   },
   //annulation des changement de statut (status: 2)
   'click .reset': function(){
     let cT = Session.get('currentTask');
     Tasks.update( { _id: cT }, { $set: { status: 2 } } );
+
   },
   'click .clElement': function(){
     let nom = this.cl;
     let currentList = this._id;
-    let conf = confirm("Vous occupez-vous de l'objet suivant: "+nom+" ?");
+    let conf = confirm("Vous occupez-vous de l'objet suivant: " + nom + " ?");
+    
     if(conf == true){
       Checklists.update( { _id: currentList }, { $set: { stat: 0 } } );
     }
