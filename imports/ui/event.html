@@ -1,0 +1,56 @@
+<template name="evenement">
+	<h1>{{titreEv}}</h1>
+	<ul>
+		{{#each tasks}}
+        	{{>task}}
+      	{{/each}}
+	</ul>
+	<button class="bt1">Ajouter une tâche</button>
+</template>
+
+<template name="task">
+	<li class="{{#if checked}}orange{{/if}} tache">{{nom}}</li>
+</template>
+
+<template name="formulaire2">
+	<h1>Ajouter une tâche</h1>
+	<form class="new-task">
+		<h4>Entrez le nom de la tâche</h4>
+		<input type="text" name="nomT" id="in1">
+		<h4>Entrez une courte description de la tâche</h4>
+		<input type="text" name="descT" id="in2">
+		<h4>Sélectionnez le type de tâche</h4>
+		<select name="typeT" id="form-type">
+			<option value="normal">simple tâche</option>
+			<option value="checklist">checklist</option>
+		</select>
+		<br>
+		{{#if checklisted}}
+			<input type="number" id="cli" class="cli" placeholder="entrez le nombre d'éléments souhaités">
+			<div id="champs"></div>
+		{{/if}}
+		<button class="effect">Ajouter</button>
+	</form>
+	<button class="end">Terminé</button>
+</template>
+
+<template name="tâche">
+	<h1>{{titleT}}</h1>
+	<p>{{descriT}}</p>
+	{{#if isAChecklist}}
+		<ul>
+			{{#each lists}}
+				{{>list}}
+			{{/each}}
+		</ul>
+	{{else}}
+		<button class="reset">pas faite</button>
+		<button class="doing">en cours</button>
+	{{/if}}
+	<button class="done">fini</button>
+	<button class="cancel">retour</button>
+</template>
+
+<template name="list">
+	<li class="clElement">{{cl}}</li>
+</template>
