@@ -77,14 +77,8 @@ Template.evenement.helpers({
   //"en cours" (status: 1) ou simplement pas faite (status 2), donc tout sauf "faite" (status: 0))
   tasks() {
     let currentEv = Session.get('eventID');
-    let tasks = Tasks.find( {fk: currentEv, status: { $ne: 0 } }, { nom: 1, status: 1 } );
-
-    console.log(tasks);
-    return tasks;
+    return Tasks.find( {fk: currentEv, status: { $ne: 0 } }, { nom: 1 } );
   },
-
-    }
-  }
 });
 
 //events
@@ -96,7 +90,7 @@ Template.evenement.events({
     formul.style.cssText="visibility:visible; position: absolute;";
   },
   //au clique sur une tâche, on récupère les valeur id, nom et desc de la tâche sur laquelle on appuie et on charge le template "tâche"
-  'click .tache': function(){
+  'click .t^che': function(){
     let tacheID = this._id;
     Session.set('currentTask', tacheID);
     let tacheName = this.nom;
@@ -199,7 +193,7 @@ Template.formulaire2.events({
 });
 
 //page des tâches -> récupération du titre et de la description
-Template.tache.helpers({
+Template.tâche.helpers({
   'titleT': function(){
     return Session.get('currentTaskName')
   },
@@ -223,7 +217,7 @@ Template.tache.helpers({
 });
 
 //events sur les tâches: changement de statut
-Template.tache.events({
+Template.tâche.events({
   //retour en arrière
   'click .cancel': function(){
     let header = document.getElementById("evenement");
@@ -236,13 +230,6 @@ Template.tache.events({
   'click .doing': function(){
     let cT = Session.get('currentTask');
     Tasks.update( { _id: cT }, { $set: { status: 1 } } );
-// je récupère l'élément task
-    let task = document.getElementById("task");
-
-    let titre = task.querySelector("h1");
-
-    titre.style.background = "orange";
-
   },
   //changement en "fait" (status: 0)
   'click .done': function(){
@@ -254,15 +241,11 @@ Template.tache.events({
 
     let formul = document.getElementById("task");
     formul.style.cssText = "visibility:hidden; position: absolute;";
-
-    
-
   },
   //annulation des changement de statut (status: 2)
   'click .reset': function(){
     let cT = Session.get('currentTask');
     Tasks.update( { _id: cT }, { $set: { status: 2 } } );
-
   },
   'click .clElement': function(){
     let nom = this.cl;
