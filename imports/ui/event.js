@@ -20,7 +20,6 @@ Template.evenement.helpers({
   //"en cours" (status: 1) ou simplement pas faite (status 2), donc tout sauf "faite" (status: 0))
   tasks() {
     let currentEv = Session.get('eventID');
-    //$ne = tout sauf...
     return Tasks.find( {fk: currentEv, finished: false }, { nom: 1 } );
   },
 });
@@ -158,6 +157,7 @@ Template.tâche.helpers({
   //affichage des listes (on récupère le nom dans la BD en spécifiant que la forreign key de la liste doit correspondre à l'id de la tâche actuelle)
   lists() {
     let currentT = Session.get('currentTask');
+    //$ne = tout sauf...
     return Checklists.find( {taskID: currentT, stat: { $ne: 0 } }, { cl: 1 } );
   }
 });
