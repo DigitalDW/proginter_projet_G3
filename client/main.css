@@ -4,11 +4,11 @@
 body{
 
 }
+/*
 #mainbody, #form, #evenement, #form2, #task{
 	position: absolute;
 	left:15%;
 	margin : 0 auto;
-	border : 2px solid black;
 	width :800px;
 	padding : 40px;
 }
@@ -40,3 +40,4 @@ input{
 .orange {
 	color: orange;
 }
+*/

@@ -1,20 +1,23 @@
 <body> <!-- les champs pour ajouter évenements et tâches-->
-	<header id="mainbody">
-		{{>main}}
-	</header>
-	<header id="form">
-		{{>formulaire}}
-	</header>
-	<header id="evenement">
-		{{>evenement}}
-	</header>
-	<header id="form2">
-		{{>formulaire2}}
-	</header>
-	<header id="task">
-		{{>tâche}}
-	</header>
+	<div class="container">
+		<header id="mainbody">
+			{{>main}}
+		</header>
+		<header id="form">
+			{{>formulaire}}
+		</header>
+		<header id="evenement">
+			{{>evenement}}
+		</header>
+		<header id="form2">
+			{{>formulaire2}}
+		</header>
+		<header id="task">
+			{{>tâche}}
+		</header>
+	</div>
 </body>
+
 
 <!-- création des templates pour remplir les headers -->
 <template name="main">
@@ -28,7 +31,12 @@
 	<p>Vous voulez créer un événement et gérer son organisation? Rien de plus simple! Il suffit d'un nom! Entrez un nom et appuyez sur la touche "Entrée" pour créer votre propre événement!</p>
 	<h3>Entrez le nom</h3>
 	<form class="new-event">
-        <input type="text" name="text" placeholder="Type to add a new event" />
+	<!-- mise  en forme des inputs -->
+		<div class="form-group">
+    		<label for="addevent">Nom de l'évènement</label>
+    		<input type="text" name="text" class="form-control" id="addevent" placeholder="Type to add a new event">
+  		</div>
+   
      </form>
-	<button>annuler</button>
+	<button class="end btn btn-danger">annuler</button>
 </template>

@@ -5,33 +5,49 @@
         	{{>task}}
       	{{/each}}
 	</ul>
-	<button class="bt1">Ajouter une tâche</button>
+	<button class="bt1 btn">Ajouter une tâche</button>
 </template>
 
 <template name="task">
-	<li class="{{#if checked}}orange{{/if}} tache">{{nom}}</li>
+	<li class="{{#if checked}}btn-warning{{/if}} tache">{{nom}}</li>
 </template>
 
 <template name="formulaire2">
 	<h1>Ajouter une tâche</h1>
-	<form class="new-task">
-		<h4>Entrez le nom de la tâche</h4>
-		<input type="text" name="nomT" id="in1">
-		<h4>Entrez une courte description de la tâche</h4>
-		<input type="text" name="descT" id="in2">
-		<h4>Sélectionnez le type de tâche</h4>
-		<select name="typeT" id="form-type">
-			<option value="normal">simple tâche</option>
-			<option value="checklist">checklist</option>
-		</select>
-		<br>
-		{{#if checklisted}}
-			<input type="number" id="cli" class="cli" placeholder="entrez le nombre d'éléments souhaités">
-			<div id="champs"></div>
-		{{/if}}
-		<button class="effect">Ajouter</button>
-	</form>
-	<button class="end">Terminé</button>
+
+		<form class="new-task">
+
+			<h4>Entrez le nom de la tâche</h4>
+			<div class="form-group">
+	    		<label for="in1">Nom de la tâche</label>
+	    		<input type="text" name="nomT" class="form-control" id="in1" placeholder="Add a new task">
+	  		</div>
+
+	  		<h4>Entrez une courte description de la tâche</h4>
+			<div class="form-group">
+	    		<label for="in2">Description</label>
+	    		<input type="text" name="descT" class="form-control" id="in2" placeholder="Task description">
+	  		</div>
+			
+			<h4>Sélectionnez le type de tâche</h4>
+			<select class="form-control input-lg" name="typeT" id="form-type">
+				<option value="normal">simple tâche</option>
+				<option value="checklist">checklist</option>
+			</select>
+			<br>
+			{{#if checklisted}}
+				<input type="number" id="cli" class="cli" placeholder="entrez le nombre d'éléments souhaités">
+				<div id="champs"></div>
+			{{/if}}
+			<div class="container-fluid">
+			<!-- mise sur une ligne des deux boutons et mise en forme-->
+				<div class="row">
+					<button class="effect btn btn-success">Ajouter</button>
+					<button class="end btn btn-default">Terminé</button>
+				</div>
+			</div>
+		</form>
+
 </template>
 
 <template name="tâche">
@@ -44,11 +60,11 @@
 			{{/each}}
 		</ul>
 	{{else}}
-		<button class="reset">pas faite</button>
-		<button class="doing">en cours</button>
+		<button class="reset btn btn-danger">pas faite</button>
+		<button class="doing btn btn-warning">en cours</button>
 	{{/if}}
-	<button class="done">fini</button>
-	<button class="cancel">retour</button>
+	<button class="done btn btn-success">fini</button>
+	<button class="cancel btn btn-primary">retour</button>
 </template>
 
 <template name="list">
