@@ -193,6 +193,18 @@ Template.tâche.events({
     let cT = Session.get('currentTask');
     Tasks.update( { _id: cT }, { $set: { checked: false } } );
   },
+  'click .delete': function(){
+  	let curT = Session.get("currentTaskName");
+  	let sur = confirm("Êtes-vous sûr de vouloir supprimer "+curT+"? L'action est irréveressible");
+  	if(sur == true){
+	  	let cT = Session.get('currentTask');
+	    Tasks.remove( { _id: cT } );
+	    let header = document.getElementById("evenement");
+   		header.style.cssText = "visibility:visible; position:absolute;";
+	    let formul = document.getElementById("task");
+	    formul.style.cssText = "visibility:hidden; position: absolute;";
+	}
+  },
   'click .clElement': function(){
     let nom = this.cl;
     let currentList = this._id;
