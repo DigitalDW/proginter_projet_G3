@@ -1,6 +1,6 @@
 <template name="evenement">
 	<h1>{{titreEv}}</h1>
-	<ul>
+	<ul class="list-group">
 		{{#each tasks}}
         	{{>task}}
       	{{/each}}
@@ -9,7 +9,8 @@
 </template>
 
 <template name="task">
-	<li class="{{#if checked}}btn-warning{{/if}} tache">{{nom}}</li>
+<!--  list-group-item-action list-group-item-success -->
+	<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache">{{nom}}</li> <!-- {{#if checked}}btn-warning{{/if}} tache-->
 </template>
 
 <template name="formulaire2">
@@ -54,7 +55,7 @@
 	<h1>{{titleT}}</h1>
 	<p>{{descriT}}</p>
 	{{#if isAChecklist}}
-		<ul>
+		<ul class="list-group">
 			{{#each lists}}
 				{{>list}}
 			{{/each}}
@@ -69,5 +70,7 @@
 </template>
 
 <template name="list">
+	<ul class="list-group">
 	<li class="clElement">{{cl}}</li>
+	</ul>
 </template>
