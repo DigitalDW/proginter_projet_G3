@@ -31,7 +31,7 @@ var taskID;
 //événement sur le deuxième header + ajouter un événement à la BD
 //@Radisa: events sert à ajouter des events (donc des comportements, comme un addEventListener) à un template
 Template.formulaire.events({
-  'click button': function(){
+  'click .end': function(){
     let header = document.getElementById("mainbody");
     header.style.cssText="visibility:visible; position:absolute;";
     let formul = document.getElementById("form");

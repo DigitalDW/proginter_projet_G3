@@ -9,8 +9,14 @@
 </template>
 
 <template name="task">
-<!--  list-group-item-action list-group-item-success -->
-	<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache">{{nom}}</li> <!-- {{#if checked}}btn-warning{{/if}} tache-->
+	<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache {{#if finished}}list-group-item-success{{/if}}">
+	<b>{{nom}}</b>
+		<div class="btn-group">
+			<button class="doing btn btn-warning"><b>...</b></button>
+			<button class="done btn btn-success">&#9989;</button>
+			<button class="delete btn btn-default">&#10060;</button>
+		</div>
+	</li>
 </template>
 
 <template name="formulaire2">

@@ -26,27 +26,25 @@ Template.evenement.helpers({
 
 //events
 Template.evenement.events({
-  'click button': function(){
+  'click .bt1': function(){
     let header = document.getElementById("evenement");
     header.style.cssText="visibility:hidden; position:absolute;";
     let formul = document.getElementById("form2");
     formul.style.cssText="visibility:visible; position: absolute;";
   },
-  //au clique sur une tâche, on récupère les valeur id, nom et desc de la tâche sur laquelle on appuie et on charge le template "tâche"
-  'click .tache': function(){
-    let tacheID = this._id;
-    Session.set('currentTask', tacheID);
-    let tacheName = this.nom;
-    Session.set('currentTaskName', tacheName);
-    let tacheDesc = this.desc;
-    Session.set('currentTaskDesc', tacheDesc);
-    let tacheType = this.type;
-    Session.set('currentTaskType', tacheType);
-    let header = document.getElementById("evenement");
-    header.style.cssText="visibility:hidden; position:absolute;";
-    let formul = document.getElementById("task");
-    formul.style.cssText="visibility:visible; position: absolute;";
-  }
+  'click .doing': function(){
+    Meteor.call('tasks.checked', this._id, !this.checked);
+
+  },
+  'click .done': function(){
+    Meteor.call('tasks.finish', this._id);
+  },
+  'click .delete': function(){
+    let sur = confirm("Êtes-vous sûr de vouloir supprimer cette tâche? L'action est irréveressible");
+    if(sur == true){
+      Meteor.call('tasks.remove', this._id);
+    }
+  },
 });
 
 Template.formulaire2.onCreated(function(){
@@ -164,47 +162,6 @@ Template.tâche.helpers({
 
 //events sur les tâches: changement de statut
 Template.tâche.events({
-  //retour en arrière
-  'click .cancel': function(){
-    let header = document.getElementById("evenement");
-    header.style.cssText = "visibility:visible; position:absolute;";
-
-    let formul = document.getElementById("task");
-    formul.style.cssText = "visibility:hidden; position: absolute;";
-  },
-  //changement en "en cours" (status: 1)
-  'click .doing': function(){
-    let cT = Session.get('currentTask');
-    Tasks.update( { _id: cT }, { $set: { checked: !this.checked } } );
-  },
-  //changement en "fait" (status: 0)
-  'click .done': function(){
-    let cT = Session.get('currentTask');
-    Tasks.update( { _id: cT }, { $set: { finished: !this.finished } } );
-
-    let header = document.getElementById("evenement");
-    header.style.cssText = "visibility:visible; position:absolute;";
-
-    let formul = document.getElementById("task");
-    formul.style.cssText = "visibility:hidden; position: absolute;";
-  },
-  //annulation des changement de statut (status: 2)
-  'click .reset': function(){
-    let cT = Session.get('currentTask');
-    Tasks.update( { _id: cT }, { $set: { checked: false } } );
-  },
-  'click .delete': function(){
-  	let curT = Session.get("currentTaskName");
-  	let sur = confirm("Êtes-vous sûr de vouloir supprimer "+curT+"? L'action est irréveressible");
-  	if(sur == true){
-	  	let cT = Session.get('currentTask');
-	    Tasks.remove( { _id: cT } );
-	    let header = document.getElementById("evenement");
-   		header.style.cssText = "visibility:visible; position:absolute;";
-	    let formul = document.getElementById("task");
-	    formul.style.cssText = "visibility:hidden; position: absolute;";
-	}
-  },
   'click .clElement': function(){
     let nom = this.cl;
     let currentList = this._id;

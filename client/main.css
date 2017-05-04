@@ -1,8 +1,11 @@
 #form, #evenement, #form2, #task{
 	visibility: hidden;
 }
-body{
-
+.btn-group{
+	position:relative;
+	float:right;
+	bottom:7px;
+	margin-left:40px;
 }
 /*
 #mainbody, #form, #evenement, #form2, #task{
