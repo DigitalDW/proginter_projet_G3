@@ -1,5 +1,6 @@
 <template name="evenement">
 	<h1>{{titreEv}}</h1>
+	<br>
 	<ul class="list-group">
 		{{#each tasks}}
         	{{>task}}
@@ -11,19 +12,17 @@
 <template name="task">
 	<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache {{#if finished}}list-group-item-success{{/if}}">
 	<b>{{nom}}</b>
-		<div class="btn-group">
-			<button class="doing btn btn-warning"><b>...</b></button>
-			<button class="done btn btn-success">&#9989;</button>
-			<button class="delete btn btn-default">&#10060;</button>
-		</div>
 	</li>
+	<div class="btn-group">
+		<button class="doing btn btn-warning"><b>...</b></button>
+		<button class="done btn btn-success">&#9989;</button>
+		<button class="delete btn btn-default">&#10060;</button>
+	</div>
 </template>
 
 <template name="formulaire2">
 	<h1>Ajouter une tâche</h1>
-
 		<form class="new-task">
-
 			<h4>Entrez le nom de la tâche</h4>
 			<div class="form-group">
 	    		<label for="in1">Nom de la tâche</label>
@@ -43,8 +42,9 @@
 			</select>
 			<br>
 			{{#if checklisted}}
-				<input type="number" id="cli" class="cli" placeholder="entrez le nombre d'éléments souhaités">
+				<input type="text" id="cl0" class="cl0" placeholder="entrez le nom d'un element">
 				<div id="champs"></div>
+				<button class="btn btn-primary plus">+</button>
 			{{/if}}
 			<div class="container-fluid">
 			<!-- mise sur une ligne des deux boutons et mise en forme-->
@@ -66,17 +66,22 @@
 				{{>list}}
 			{{/each}}
 		</ul>
-	{{else}}
-		<button class="reset btn btn-danger">pas faite</button>
-		<button class="doing btn btn-warning">en cours</button>
 	{{/if}}
-	<button class="done btn btn-success">fini</button>
-	<button class="cancel btn btn-primary">retour</button>
-	<button class="delete btn btn-default">supprimer</button>
+	<button class="btn btn-primary retour">retour</button>
 </template>
 
 <template name="list">
-	<ul class="list-group">
-	<li class="clElement">{{cl}}</li>
-	</ul>
+	<li class="clElement list-group-item">{{cl}}</li>
+</template>
+
+<template name="dropdown">
+	<p>oy m8</p>
+	<p>{{description}}</p>
+		{{#if isAChecklist}}
+			<ul class="list-group">
+				{{#each lists}}
+					{{>list}}
+				{{/each}}
+			</ul>
+		{{/if}}
 </template>

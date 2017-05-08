@@ -1,36 +1,31 @@
 import { Template } from 'meteor/templating';
- 
 import { Events } from '../api/event.js';
-
 import { Tasks } from '../api/task.js';
-
 import { Checklists } from '../api/checklist.js';
- 
 import './event.html';
 
 import { ReactiveVar } from 'meteor/reactive-var';
+
 //création de la page de l'événement: on récupère la valeur de la session "titreEv" pour faire correspondre le titre
 Template.evenement.helpers({
   'titreEv': function(){
     let test = Session.get('titreEv');
     return test;
   },
-  //affichage des tâches (on récupère le nom dans la BD en spécifiant que la forreign key de 
-  //la tâche doit correspondre à l'id de l'événement actuel et on n'affiche que les tâches qui sont 
-  //"en cours" (status: 1) ou simplement pas faite (status 2), donc tout sauf "faite" (status: 0))
   tasks() {
     let currentEv = Session.get('eventID');
     return Tasks.find( {fk: currentEv, finished: false }, { nom: 1 } );
-  },
+  }
 });
 
-//events
+//events du template evenement
 Template.evenement.events({
   'click .bt1': function(){
     let header = document.getElementById("evenement");
     header.style.cssText="visibility:hidden; position:absolute;";
     let formul = document.getElementById("form2");
     formul.style.cssText="visibility:visible; position: absolute;";
+    Session.set("counter",1);
   },
   'click .doing': function(){
     Meteor.call('tasks.checked', this._id, !this.checked);
@@ -44,6 +39,16 @@ Template.evenement.events({
     if(sur == true){
       Meteor.call('tasks.remove', this._id);
     }
+  },
+  'click .list-group-item': function(){
+    Session.set("currentTaskName",this.nom);
+    Session.set("currentTaskDesc",this.desc);
+    Session.set("currentTaskType",this.type);
+    Session.set("currentTask",this._id);
+    let header = document.getElementById("evenement");
+    header.style.cssText="visibility:hidden; position:absolute;";
+    let task = document.getElementById("task");
+    task.style.cssText="visibility:visible; position: absolute;";
   },
 });
 
@@ -68,21 +73,17 @@ Template.formulaire2.events({
       Session.set('checklisted',false);
     }
   },
-  'input #cli': function(event,template){
+  'click .plus': function(event){
+    i = Session.get("counter");
     event.preventDefault();
-
-    var number = event.currentTarget.value;
-    Session.set('cln',number);
-    let champs = document.getElementById("champs");
-    for(let i=1;i<=number;i++){
-      let d = document.createElement("input");
-      let b = document.createElement("br");
-      d.setAttribute("type","text");
-      d.setAttribute("placeholder","nom");
-      d.setAttribute("id","cl"+i);
-      champs.appendChild(d);
-      champs.appendChild(b);
-    }
+    let d = document.createElement("input");
+    let b = document.createElement("br");
+    d.setAttribute("type","text");
+    d.setAttribute("placeholder","nom");
+    d.setAttribute("id","cl"+i);
+    champs.appendChild(d);
+    champs.appendChild(b);
+    Session.set("counter", Session.get("counter")+1);
   },
   'submit form': function(event,template){
     event.preventDefault();
@@ -104,18 +105,20 @@ Template.formulaire2.events({
       finished
     });
 
-    let cln = Session.get('cln');
     let checklist = Session.get('checklisted');
+    let counter = Session.get("counter");
     let stat = 1;
     if(checklist){
-      for(let i=1;i<=cln;i++){
-        console.log("hey");
-        let cl = document.getElementById("cl"+i).value;
-        Checklists.insert({
-          cl,
-          stat,
-          taskID
-        });
+      for(let i=0;i<counter;i++){
+        if(document.getElementById("cl"+i).value != null){
+          console.log("hey");
+          let cl = document.getElementById("cl"+i).value;
+          Checklists.insert({
+            cl,
+            stat,
+            taskID
+          });
+        }
       }
     }
     //reset des valeurs dans les champs et dans le choix multiple
@@ -123,7 +126,8 @@ Template.formulaire2.events({
     event.target.descT.value = "";
     event.target.typeT.value = "normal";
     template.checklisted.set(false);
-    alert('Tâche ajoutée. Vous pouvez en ajouter une autre, ou appuyer sur "terminé" pour revenir à la page précédente');
+    Session.set('checklisted',false);
+    Session.set("counter", 1);
   },
   //retour à la page "evenement" une fois que l'utilisateur a fini
   'click .end': function(){
@@ -135,13 +139,13 @@ Template.formulaire2.events({
   }
 });
 
-//page des tâches -> récupération du titre et de la description
+
 Template.tâche.helpers({
   'titleT': function(){
-    return Session.get('currentTaskName');
+    return Session.get("currentTaskName");
   },
   'descriT': function(){
-    return Session.get('currentTaskDesc');
+    return Session.get("currentTaskDesc");
   },
   isAChecklist: function(){
     let taskType = Session.get('currentTaskType');
@@ -152,7 +156,6 @@ Template.tâche.helpers({
     }
     return isAChecklist;
   },
-  //affichage des listes (on récupère le nom dans la BD en spécifiant que la forreign key de la liste doit correspondre à l'id de la tâche actuelle)
   lists() {
     let currentT = Session.get('currentTask');
     //$ne = tout sauf...
@@ -170,5 +173,11 @@ Template.tâche.events({
     if(conf == true){
       Checklists.update( { _id: currentList }, { $set: { stat: 0 } } );
     }
+  },
+  'click .retour': function(){
+    let header = document.getElementById("evenement");
+    header.style.cssText="visibility:visible; position:absolute;";
+    let task = document.getElementById("task");
+    task.style.cssText="visibility:hidden; position: absolute;";
   }
 });

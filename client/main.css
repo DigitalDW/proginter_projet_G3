@@ -3,9 +3,8 @@
 }
 .btn-group{
 	position:relative;
-	float:right;
-	bottom:7px;
-	margin-left:40px;
+	left:300px;
+	bottom:37px;
 }
 /*
 #mainbody, #form, #evenement, #form2, #task{
