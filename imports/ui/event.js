@@ -74,16 +74,42 @@ Template.formulaire2.events({
     }
   },
   'click .plus': function(event){
-    i = Session.get("counter");
+    index = Session.get("counter");
     event.preventDefault();
-    let d = document.createElement("input");
-    let b = document.createElement("br");
-    d.setAttribute("type","text");
-    d.setAttribute("placeholder","nom");
-    d.setAttribute("id","cl"+i);
-    champs.appendChild(d);
-    champs.appendChild(b);
-    Session.set("counter", Session.get("counter")+1);
+
+    // J'ai changé le nom de ces 2 variables pour que ça soit plus clair pour moi
+    // 
+
+    let input = document.createElement("input");
+    let span = document.createElement('span');
+    let br = document.createElement("br");
+
+    input.setAttribute("type","text");
+    input.setAttribute("placeholder","nom");
+    input.setAttribute("id","cl" + index);
+    input.setAttribute("class", "form-control");
+    
+    span.setAttribute('class', "btn btn-default input-group-addon minus");
+    span.setAttribute('data-id', "cl" + index);
+    span.textContent = "-";
+    // input.get
+  
+    champs.getElementsByTagName('div')[0].appendChild(input);
+    champs.getElementsByTagName('div')[0].appendChild(span);
+    champs.getElementsByTagName('div')[0].appendChild(br);
+
+    Session.set("counter", Session.get("counter") + 1);
+  },
+  'click .minus': function(event) {
+      // quand on clique sur une classe "minus", enlever l'input de l'HTML en concordance avec son data-id
+      // c'est bien ta logique, non??
+      let element = "récupérer l'élément courant";
+      let dataId = element.dataset.id; // trouver un moyen de recevoir le data-id du .minus cliqué(Vaste chantier !)
+
+
+      if (dataId === input.id) {
+        // on supprime l'input + span
+      }
   },
   'submit form': function(event,template){
     event.preventDefault();
@@ -105,12 +131,12 @@ Template.formulaire2.events({
       finished
     });
 
-    let checklist = Session.get('checklisted');
+    let checklist = Session.get('checklisted'); // should return true | false
     let counter = Session.get("counter");
     let stat = 1;
     if(checklist){
       for(let i=0;i<counter;i++){
-        if(document.getElementById("cl"+i).value != null){
+        if(document.getElementById("cl"+i).value !== null){
           console.log("hey");
           let cl = document.getElementById("cl"+i).value;
           Checklists.insert({
@@ -121,7 +147,8 @@ Template.formulaire2.events({
         }
       }
     }
-    //reset des valeurs dans les champs et dans le choix multiple
+    //reset des valeurs dans les champs et dans le choix multiple 
+    // @moi : voilà pourquoi pas de message et champs vidés
     event.target.nomT.value = "";
     event.target.descT.value = "";
     event.target.typeT.value = "normal";

@@ -41,11 +41,20 @@
 				<option value="checklist">checklist</option>
 			</select>
 			<br>
+			
+
 			{{#if checklisted}}
-				<input type="text" id="cl0" class="cl0" placeholder="entrez le nom d'un element">
-				<div id="champs"></div>
+			<!-- C'est par ici que j'ai essayé de modifier la structure du HTMl,  -->
+				<div id="champs">
+					<div>
+						<input type="text" id="cl0" class="cl0 form-control" placeholder="entrez le nom d'un element">
+						<span class="btn btn-default minus input-group-addon">-</span><br>
+					</div>
+				</div>
 				<button class="btn btn-primary plus">+</button>
 			{{/if}}
+			<br><br> <!-- décoller le bouton + des boutons de controle  -->
+
 			<div class="container-fluid">
 			<!-- mise sur une ligne des deux boutons et mise en forme-->
 				<div class="row">
