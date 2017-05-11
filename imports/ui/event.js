@@ -76,14 +76,26 @@ Template.formulaire2.events({
   'click .plus': function(event){
     i = Session.get("counter");
     event.preventDefault();
+    let div = document.createElement("div");
     let d = document.createElement("input");
-    let b = document.createElement("br");
+    let btn = document.createElement("button");
+    div.setAttribute("id","d"+i)
     d.setAttribute("type","text");
     d.setAttribute("placeholder","nom");
-    d.setAttribute("id","cl"+i);
-    champs.appendChild(d);
-    champs.appendChild(b);
+    d.setAttribute("class","inputCl"+i);
+    btn.setAttribute("id",i);
+    btn.setAttribute("class","btn btn-primary delIn");
+    btn.innerHTML="-";
+    div.appendChild(d);
+    div.appendChild(btn);
+    champs.appendChild(div);
     Session.set("counter", Session.get("counter")+1);
+  },
+  'click .delIn': function(event){
+    event.preventDefault();
+    console.log(this);
+    let bt = document.querySelector("button.delIn").id;
+    console.log(bt);
   },
   'submit form': function(event,template){
     event.preventDefault();
@@ -109,6 +121,10 @@ Template.formulaire2.events({
       let counter = Session.get("counter");
       let stat = 1;
       if(checklist){
+        for(let j=1;j<counter;j++){
+          let inputs = document.querySelector("input.inputCl"+j);
+          inputs.setAttribute("id","cl"+j)
+        }
         for(let i=0;i<counter;i++){
           if(document.getElementById("cl"+i).value != null){
             console.log("hey");
