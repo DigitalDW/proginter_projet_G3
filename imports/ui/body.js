@@ -45,26 +45,29 @@ Template.formulaire.events({
     const target = event.target;
     const name = target.text.value; // récupération du nom de l'événement
 
-    console.log(event);
-
     // appel de l'objet BD pour insérer l'événement
-    evenementID = Events.insert({
-      name,
-    });
-    target.text.value = '';
+    if(name != ""){
+      evenementID = Events.insert({
+        name,
+      });
+      console.log(event);
+      target.text.value = '';
 
-    //création d'une session pour "importer" la valeur du nom de l'événement dans le titre de la page
-    Session.set('titreEv', name);
-    Session.set('eventID', evenementID);
+      //création d'une session pour "importer" la valeur du nom de l'événement dans le titre de la page
+      Session.set('titreEv', name);
+      Session.set('eventID', evenementID);
 
-    let formul = document.getElementById("form");
-    formul.style.cssText="visibility:hidden; position: absolute;"; 
+      let formul = document.getElementById("form");
+      formul.style.cssText="visibility:hidden; position: absolute;"; 
 
-    // création d'une nouvelle variable pour retourner le contenu html "evenement"
-    // et ensuite on le rend visible
+      // création d'une nouvelle variable pour retourner le contenu html "evenement"
+      // et ensuite on le rend visible
 
-    let evenement = document.getElementById('evenement');
-    evenement.style.visibility = 'visible';
+      let evenement = document.getElementById('evenement');
+      evenement.style.visibility = 'visible';
+    }else{
+      alert("veuillez remplir le champ")
+    }
   },
 });
 

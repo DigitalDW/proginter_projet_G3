@@ -64,7 +64,7 @@ Template.formulaire2.helpers({
 })
 //formulaire d'ajout de tâche, formulation similaire mais différente de l'ajout d'un event à la BD
 Template.formulaire2.events({
-  'change select': function( event, template ){
+  'change select': function(event,template){
     if( $(event.target).val() == "checklist"){
       template.checklisted.set(true);
       Session.set('checklisted',true);
@@ -96,46 +96,55 @@ Template.formulaire2.events({
     let checked = false;
     let finished = false;
     //ajout à la BD
-    taskID = Tasks.insert({
-      nom,
-      desc,
-      type,
-      fk,
-      checked,
-      finished
-    });
-
-    let checklist = Session.get('checklisted');
-    let counter = Session.get("counter");
-    let stat = 1;
-    if(checklist){
-      for(let i=0;i<counter;i++){
-        if(document.getElementById("cl"+i).value != null){
-          console.log("hey");
-          let cl = document.getElementById("cl"+i).value;
-          Checklists.insert({
-            cl,
-            stat,
-            taskID
-          });
+    if(nom != ""){
+      taskID = Tasks.insert({
+        nom,
+        desc,
+        type,
+        fk,
+        checked,
+        finished
+      });
+      let checklist = Session.get('checklisted');
+      let counter = Session.get("counter");
+      let stat = 1;
+      if(checklist){
+        for(let i=0;i<counter;i++){
+          if(document.getElementById("cl"+i).value != null){
+            console.log("hey");
+            let cl = document.getElementById("cl"+i).value;
+            Checklists.insert({
+              cl,
+              stat,
+              taskID
+            });
+          }
         }
       }
+      //reset des valeurs dans les champs et dans le choix multiple
+      event.target.nomT.value = "";
+      event.target.descT.value = "";
+      event.target.typeT.value = "normal";
+      template.checklisted.set(false);
+      Session.set('checklisted',false);
+      Session.set("counter", 1);
+    }else{
+      alert("remplissez au moins le nom de la tâche")
     }
-    //reset des valeurs dans les champs et dans le choix multiple
-    event.target.nomT.value = "";
-    event.target.descT.value = "";
-    event.target.typeT.value = "normal";
-    template.checklisted.set(false);
-    Session.set('checklisted',false);
-    Session.set("counter", 1);
   },
   //retour à la page "evenement" une fois que l'utilisateur a fini
-  'click .end': function(){
+  'click .end': function(event,template){
+    event.preventDefault();
     let header = document.getElementById("evenement");
     header.style.cssText="visibility:visible; position:absolute;";
     let formul = document.getElementById("form2");
     formul.style.cssText="visibility:hidden; position: absolute;";
-    return false;
+    document.getElementById("in1").value=""; // faire des getElementById
+    document.getElementById("in2").value=""; // faire des getElementById
+    document.getElementById("form-type").value="normal";
+    template.checklisted.set(false);
+    Session.set('checklisted',false);
+    Session.set("counter", 1);
   }
 });
 
