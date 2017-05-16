@@ -118,6 +118,8 @@ Template.formulaire2.events({
     let bt = document.querySelector("button.delIn").id;
     console.log(bt);
   },
+
+
   'submit form': function(event,template){
     event.preventDefault();
     //récupération des valeurs
@@ -128,7 +130,14 @@ Template.formulaire2.events({
     let fk = Session.get('eventID');
     let checked = false;
     let finished = false;
-    //ajout à la BD
+// condition pour empêcher la mise des données vides dans la DB 
+// else : executer ce qui suit (ajout in DB)
+    if(nom === ""){
+      alert("Aha pas de nom rentré!");
+
+    } else {
+
+    //ajout à la BD de la tâche
     taskID = Tasks.insert({
       nom,
       desc,
@@ -141,6 +150,8 @@ Template.formulaire2.events({
     let checklist = Session.get('checklisted'); // should return true | false
     let counter = Session.get("counter");
     let stat = 1;
+
+    // update de la DB avec les checklists
     if(checklist){
       for(let i=0;i<counter;i++){
         if(document.getElementById("cl"+i).value !== null){
@@ -161,8 +172,6 @@ Template.formulaire2.events({
       template.checklisted.set(false);
       Session.set('checklisted',false);
       Session.set("counter", 1);
-    }else{
-      alert("remplissez au moins le nom de la tâche")
     }
 
     //reset des valeurs dans les champs et dans le choix multiple 
@@ -173,6 +182,10 @@ Template.formulaire2.events({
     template.checklisted.set(false);
     Session.set('checklisted',false);
     Session.set("counter", 1);
+
+// on confirme que la tâche a bien été ajoutée à la DB
+      alert("La tâche " + nom.toLowerCase() + " a été ajoutée ! \nAjouter une autre ou retour");
+  }
 
   },
   //retour à la page "evenement" une fois que l'utilisateur a fini
