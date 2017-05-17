@@ -9,10 +9,14 @@ import { ReactiveVar } from 'meteor/reactive-var';
 //création de la page de l'événement: on récupère la valeur de la session "titreEv" pour faire correspondre le titre
 Template.evenement.helpers({
   'titreEv': function(){
+    let name = FlowRouter.getParam('nom');
+    Session.set("titreEv", name)
     let test = Session.get('titreEv');
     return test;
   },
   tasks() {
+    let currentEvent = FlowRouter.getParam('eventId');
+    Session.set("eventID", currentEvent);
     let currentEv = Session.get('eventID');
     return Tasks.find( {fk: currentEv, finished: false }, { nom: 1 } );
   }
@@ -21,11 +25,12 @@ Template.evenement.helpers({
 //events du template evenement
 Template.evenement.events({
   'click .bt1': function(){
-    let header = document.getElementById("evenement");
-    header.style.cssText="visibility:hidden; position:absolute;";
-    let formul = document.getElementById("form2");
-    formul.style.cssText="visibility:visible; position: absolute;";
+    FlowRouter.go('form2');
     Session.set("counter",1);
+  },
+  'click .bt2': function(event){
+    event.preventDefault();
+    
   },
   'click .doing': function(){
     Meteor.call('tasks.checked', this._id, !this.checked);
@@ -45,10 +50,10 @@ Template.evenement.events({
     Session.set("currentTaskDesc",this.desc);
     Session.set("currentTaskType",this.type);
     Session.set("currentTask",this._id);
-    let header = document.getElementById("evenement");
-    header.style.cssText="visibility:hidden; position:absolute;";
-    let task = document.getElementById("task");
-    task.style.cssText="visibility:visible; position: absolute;";
+    let pathDef = "/tache/:taskId"
+    let params  = {taskId: Session.get('currentTask')};
+    let queryParams = {show: "y+e=s", color: "black"};
+    FlowRouter.go(pathDef, params, queryParams);
   },
 });
 
@@ -185,11 +190,12 @@ Template.formulaire2.events({
   },
   //retour à la page "evenement" une fois que l'utilisateur a fini
   'click .end': function(event,template){
+    let evenementID = Session.get("eventID");
     event.preventDefault();
-    let header = document.getElementById("evenement");
-    header.style.cssText="visibility:visible; position:absolute;";
-    let formul = document.getElementById("form2");
-    formul.style.cssText="visibility:hidden; position: absolute;";
+    let pathDef = "/evenement/:eventId"
+    let params  = {eventId: evenementID};
+    let queryParams = {show: "y+e=s", color: "black"};
+    FlowRouter.go(pathDef, params, queryParams);
     document.getElementById("in1").value=""; // faire des getElementById
     document.getElementById("in2").value=""; // faire des getElementById
     document.getElementById("form-type").value="normal";
@@ -235,9 +241,9 @@ Template.tâche.events({
     }
   },
   'click .retour': function(){
-    let header = document.getElementById("evenement");
-    header.style.cssText="visibility:visible; position:absolute;";
-    let task = document.getElementById("task");
-    task.style.cssText="visibility:hidden; position: absolute;";
+    let pathDef = "/evenement/:eventId"
+    let params  = {eventId: Session.get('eventID')};
+    let queryParams = {show: "y+e=s", color: "black"};
+    FlowRouter.go(pathDef, params, queryParams);
   }
 });

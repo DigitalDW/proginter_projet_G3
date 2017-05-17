@@ -17,13 +17,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 Template.main.events({
   'click button': function(){
     console.log("You clicked on the 1st button");
-    let header = document.getElementById("mainbody");
-    header.style.cssText="visibility:hidden; position:absolute;";
-    let formul = document.getElementById("form");
-    formul.style.cssText="visibility:visible; position: absolute;";
-    // j'ai parametré la visibilité du 3e écran... dans la suite aussi
-    let evenement = document.getElementById("evenement");
-    evenement.style.cssText="visibility:hidden; position:absolute;";
+    FlowRouter.go('form');
   }
 });
 var evenementID;
@@ -32,12 +26,7 @@ var taskID;
 //@Radisa: events sert à ajouter des events (donc des comportements, comme un addEventListener) à un template
 Template.formulaire.events({
   'click .end': function(){
-    let header = document.getElementById("mainbody");
-    header.style.cssText="visibility:visible; position:absolute;";
-    let formul = document.getElementById("form");
-    formul.style.cssText="visibility:hidden; position: absolute;";
-
-
+    FlowRouter.go('home');
   }, // expliquer cette construction ci-dessous. --> la même que le tutoriel officiel de meteor
   'submit .new-event'(event) {
     event.preventDefault();
@@ -55,16 +44,11 @@ Template.formulaire.events({
 
       //création d'une session pour "importer" la valeur du nom de l'événement dans le titre de la page
       Session.set('titreEv', name);
-      Session.set('eventID', evenementID);
 
-      let formul = document.getElementById("form");
-      formul.style.cssText="visibility:hidden; position: absolute;"; 
-
-      // création d'une nouvelle variable pour retourner le contenu html "evenement"
-      // et ensuite on le rend visible
-
-      let evenement = document.getElementById('evenement');
-      evenement.style.visibility = 'visible';
+      let pathDef = "/evenement/:nom/:eventId"
+      let params  = {nom: name, eventId: evenementID};
+      let queryParams = {show: "y+e=s", color: "black"};
+      FlowRouter.go(pathDef, params, queryParams);
     }else{
       alert("veuillez remplir le champ")
     }
