@@ -87,7 +87,7 @@ Template.formulaire2.events({
     input.setAttribute("type","text");
     input.setAttribute("placeholder","nom");
     input.setAttribute("id","cl" + index);
-    input.setAttribute("class", "form-control");
+    input.setAttribute("class", "form-control cl");
     
     span.setAttribute('class', "btn btn-default input-group-addon minus");
     span.setAttribute('data-id', "cl" + index);
@@ -113,14 +113,9 @@ Template.formulaire2.events({
       inputParent.removeChild(champs.querySelector("span[data-id='" + element + "']")); // depuis le parent, je supprime les enfants
       
       inputParent.removeChild(inputASuppr); // idem
-      
-  },
 
-  'click .delIn': function(event){
-    event.preventDefault();
-    console.log(this);
-    let bt = document.querySelector("button.delIn").id;
-    console.log(bt);
+      Session.set("counter", Session.get("counter")-1);
+      
   },
 
 
@@ -136,13 +131,9 @@ Template.formulaire2.events({
     let finished = false;
 // condition pour empêcher la mise des données vides dans la DB 
 // else : executer ce qui suit (ajout in DB)
-    if(nom === ""){
-      alert("Aha pas de nom rentré!");
-
-    } else {
-
     //ajout à la BD de la tâche
-    taskID = Tasks.insert({
+    if(nom != ""){
+      taskID = Tasks.insert({
       nom,
       desc,
       type,
@@ -157,6 +148,11 @@ Template.formulaire2.events({
 
     // update de la DB avec les checklists
     if(checklist){
+      //on récupère tous les inputs dans un tableau
+      let inputs = document.querySelectorAll("input.cl");
+      //met à jour l'id de chaque input -> id=cl0,cl1,cl2,...
+      inputs.forEach((d,i) => d.id="cl"+i);
+      //ajouter les elements clx à la base
       for(let i=0;i<counter;i++){
         if(document.getElementById("cl"+i).value !== null){
           console.log("hey");
@@ -169,13 +165,6 @@ Template.formulaire2.events({
 
         }
       }
-      //reset des valeurs dans les champs et dans le choix multiple
-      event.target.nomT.value = "";
-      event.target.descT.value = "";
-      event.target.typeT.value = "normal";
-      template.checklisted.set(false);
-      Session.set('checklisted',false);
-      Session.set("counter", 1);
     }
 
     //reset des valeurs dans les champs et dans le choix multiple 
@@ -189,6 +178,8 @@ Template.formulaire2.events({
 
 // on confirme que la tâche a bien été ajoutée à la DB
       alert("La tâche " + nom.toLowerCase() + " a été ajoutée ! \nAjouter une autre ou retour");
+  }else{
+    alert("il manque un nom");
   }
 
   },
