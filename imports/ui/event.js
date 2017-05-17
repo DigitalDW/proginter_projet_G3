@@ -194,10 +194,9 @@ Template.formulaire2.events({
   },
   //retour à la page "evenement" une fois que l'utilisateur a fini
   'click .end': function(event,template){
-    let evenementID = Session.get("eventID");
     event.preventDefault();
-    let pathDef = "/evenement/:eventId"
-    let params  = {eventId: evenementID};
+    let pathDef = "/evenement/:nom/:eventId"
+    let params  = {nom: Session.get('titreEv'), eventId: Session.get("eventID")};
     let queryParams = {show: "y+e=s", color: "black"};
     FlowRouter.go(pathDef, params, queryParams);
     document.getElementById("in1").value=""; // faire des getElementById
