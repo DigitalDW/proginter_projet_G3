@@ -91,6 +91,7 @@ Template.formulaire2.events({
     
     span.setAttribute('class', "btn btn-default input-group-addon minus");
     span.setAttribute('data-id', "cl" + index);
+    // span.dataset.id = 'cl' + index;
     span.textContent = "-";
     // input.get
   
@@ -100,18 +101,21 @@ Template.formulaire2.events({
 
     Session.set("counter", Session.get("counter") + 1);
   },
+// ".minus".addEventListener('click', function(event) {})
   'click .minus': function(event) {
       // quand on clique sur une classe "minus", enlever l'input de l'HTML en concordance avec son data-id
       // c'est bien ta logique, non??
-      let element = "récupérer l'élément courant";
-      let dataId = element.dataset.id; // trouver un moyen de recevoir le data-id du .minus cliqué(Vaste chantier !)
+      let element = event.target.dataset.id; // @me : event.target se réfère à l'élément cliqué (--> <input cata-id="cl0">)
 
+      let inputASuppr = document.querySelector('#' + element); // document.getElementById('cl0') ligne 51 event.html;
+      let inputParent = inputASuppr.parentNode; // je récupère le parent (l'élément au dessus)
 
-      if (dataId === input.id) {
-        // on supprime l'input + span
-      }
-
+      inputParent.removeChild(champs.querySelector("span[data-id='" + element + "']")); // depuis le parent, je supprime les enfants
+      
+      inputParent.removeChild(inputASuppr); // idem
+      
   },
+
   'click .delIn': function(event){
     event.preventDefault();
     console.log(this);
