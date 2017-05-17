@@ -30,7 +30,11 @@ Template.evenement.events({
   },
   'click .bt2': function(event){
     event.preventDefault();
-    
+    let pathDef = "/evenement/:nom/:eventId"
+    let params  = {nom: Session.get("titreEv"), eventId: Session.get('eventID')};
+    let queryParams = {show: "y+e=s", color: "black"};
+    let path = FlowRouter.path(pathDef, params, queryParams);
+    $(".alert").alert();
   },
   'click .doing': function(){
     Meteor.call('tasks.checked', this._id, !this.checked);
@@ -241,9 +245,19 @@ Template.tâche.events({
     }
   },
   'click .retour': function(){
-    let pathDef = "/evenement/:eventId"
-    let params  = {eventId: Session.get('eventID')};
+    let pathDef = "/evenement/:nom/:eventId"
+    let params  = {nom: Session.get("titreEv"), eventId: Session.get('eventID')};
     let queryParams = {show: "y+e=s", color: "black"};
     FlowRouter.go(pathDef, params, queryParams);
   }
 });
+
+Template.alert.helpers({
+  'lien': function(){
+    let pathDef = "/evenement/:nom/:eventId"
+    let params  = {nom: Session.get("titreEv"), eventId: Session.get('eventID')};
+    let queryParams = {show: "y+e=s", color: "black"};
+    let path = FlowRouter.path(pathDef, params, queryParams);
+    return path;
+  }
+})
