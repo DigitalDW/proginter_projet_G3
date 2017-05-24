@@ -55,10 +55,6 @@ Template.formulaire.events({
       let params  = {nom: name, eventId: evenementID};
       let queryParams = {show: "y+e=s", color: "black"};
       FlowRouter.go(pathDef, params, queryParams);
-      bootstrap_alert = function(){}
-      bootstrap_alert.info = function(message){
-        $('#alert_placeholder').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-label="close">x</button><span>'+message+'</span></div>')
-      }
     }else{
       alert("veuillez remplir le champ")
     }

@@ -9,7 +9,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 Template.evenement.onCreated(function(){
   let ev = FlowRouter.getParam('eventId');
   console.log(ev);
-  if( Events.find( { _id: ev } ).fetch() == false){
+  if( Events.findOne( { _id: ev } ) == false){
     alert("L'événement que vous cherchez à accèder n'existe plus");
     FlowRouter.go("/");
   }
@@ -17,6 +17,8 @@ Template.evenement.onCreated(function(){
 //création de la page de l'événement: on récupère la valeur de la session "titreEv" pour faire correspondre le titre
 Template.evenement.helpers({
   'titreEv': function(){
+    let nom = FlowRouter.getParam("nom");
+    Session.set("titreEv", nom);
     let currentEvent = FlowRouter.getParam('eventId');
     let name = Events.findOne( { _id: currentEvent } );
     return name;
@@ -51,6 +53,18 @@ Template.evenement.events({
     let params  = {nom: Session.get("titreEv"), eventId: Session.get('eventID')};
     let queryParams = {show: "y+e=s", color: "black"};
     let path = FlowRouter.path(pathDef, params, queryParams);
+    let di = document.getElementById("smt");
+    let al = document.createElement("div");
+    let bt = document.createElement("button");
+    let br = document.createElement("br");
+    bt.innerHTML="&times;";
+    bt.setAttribute("data-dismiss","alert");
+    al.setAttribute("class","alert alert-info alert-dismissible show");
+    al.setAttribute("role","alert");
+    al.innerHTML="Envoyer ce lien aux personnes que vous souhaitez! \t : "+path;
+    al.appendChild(br);
+    al.appendChild(bt);
+    di.appendChild(al);
     $(".alert").alert();
   },
   'click .doing': function(){
@@ -75,7 +89,7 @@ Template.evenement.events({
     let params  = {taskId: Session.get('currentTask')};
     let queryParams = {show: "y+e=s", color: "black"};
     FlowRouter.go(pathDef, params, queryParams);
-  },
+  }
 });
 
 Template.formulaire2.onCreated(function(){

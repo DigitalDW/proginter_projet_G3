@@ -3,6 +3,9 @@
 	left:300px;
 	bottom:37px;
 }
+#alert{
+	visibility: hidden;
+}
 /*
 #mainbody, #form, #evenement, #form2, #task{
 	position: absolute;
