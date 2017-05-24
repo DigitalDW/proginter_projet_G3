@@ -36,21 +36,27 @@ Template.evenement.helpers({
   tasks() {
     let currentEvent = FlowRouter.getParam('eventId');
     Session.set("eventID", currentEvent);
-    let currentEv = Session.get('eventID');
-    return Tasks.find( {fk: currentEv, finished: false }, { nom: 1 } );
+    return Tasks.find( {fk: currentEvent, finished: false }, { nom: 1 } );
   }
 });
 
 //events du template evenement
 Template.evenement.events({
   'click .bt1': function(){
-    FlowRouter.go('form2');
+    let nom = FlowRouter.getParam("nom");
+    let currentEvent = FlowRouter.getParam('eventId');
+    let pathDef = "/form-list/:nom/:eventId"
+    let params  = {nom: nom, eventId: currentEvent };
+    let queryParams = {show: "y+e=s", color: "black"};
+    FlowRouter.go(pathDef, params, queryParams);
     Session.set("counter",1);
   },
   'click .bt2': function(event){
     event.preventDefault();
+    let nom = FlowRouter.getParam("nom");
+    let currentEvent = FlowRouter.getParam('eventId');
     let pathDef = "/evenement/:nom/:eventId"
-    let params  = {nom: Session.get("titreEv"), eventId: Session.get('eventID')};
+    let params  = {nom: nom, eventId: currentEvent};
     let queryParams = {show: "y+e=s", color: "black"};
     let path = FlowRouter.path(pathDef, params, queryParams);
     let di = document.getElementById("smt");
@@ -85,8 +91,10 @@ Template.evenement.events({
     Session.set("currentTaskDesc",this.desc);
     Session.set("currentTaskType",this.type);
     Session.set("currentTask",this._id);
-    let pathDef = "/tache/:taskId"
-    let params  = {taskId: Session.get('currentTask')};
+    let nom = FlowRouter.getParam("nom");
+    let currentEvent = FlowRouter.getParam('eventId');
+    let pathDef = "/tache/:nom/:eventId/:taskId"
+    let params  = { nom: nom, eventId: currentEvent, taskId: this._id};
     let queryParams = {show: "y+e=s", color: "black"};
     FlowRouter.go(pathDef, params, queryParams);
   }
@@ -165,8 +173,10 @@ Template.formulaire2.events({
     let nom = event.target.nomT.value;
     let desc = event.target.descT.value;
     let type = event.target.typeT.value;
+    let badge;
+    type == "checklist" ? badge = true : badge = false;
     //valeurs pas défaut
-    let fk = Session.get('eventID');
+    let fk = FlowRouter.getParam('eventId');;
     let checked = false;
     let finished = false;
 // condition pour empêcher la mise des données vides dans la DB 
@@ -179,7 +189,8 @@ Template.formulaire2.events({
       type,
       fk,
       checked,
-      finished
+      finished,
+      badge
     });
 
     let checklist = Session.get('checklisted'); // should return true | false
@@ -202,7 +213,6 @@ Template.formulaire2.events({
             stat,
             taskID
           });
-
         }
       }
     }
@@ -226,8 +236,10 @@ Template.formulaire2.events({
   //retour à la page "evenement" une fois que l'utilisateur a fini
   'click .end': function(event,template){
     event.preventDefault();
+    let nom = FlowRouter.getParam("nom");
+    let currentEvent = FlowRouter.getParam('eventId');
     let pathDef = "/evenement/:nom/:eventId"
-    let params  = {nom: Session.get('titreEv'), eventId: Session.get("eventID")};
+    let params  = {nom: nom, eventId: currentEvent};
     let queryParams = {show: "y+e=s", color: "black"};
     FlowRouter.go(pathDef, params, queryParams);
     document.getElementById("in1").value=""; // faire des getElementById
@@ -242,14 +254,21 @@ Template.formulaire2.events({
 
 Template.tâche.helpers({
   'titleT': function(){
-    return Session.get("currentTaskName");
+    let currTask = FlowRouter.getParam('taskId');
+    let name = Tasks.findOne( { _id: currTask } );
+    return name;
   },
   'descriT': function(){
-    return Session.get("currentTaskDesc");
+    let currTask = FlowRouter.getParam('taskId');
+    let descT = Tasks.findOne( { _id: currTask } );
+    return descT;
   },
   isAChecklist: function(){
-    let taskType = Session.get('currentTaskType');
-    if(taskType == "checklist"){
+    let currTask = FlowRouter.getParam('taskId');
+    console.log(currTask)
+    let taskType = Tasks.findOne( { _id: currTask } );
+    let lll = taskType.type;
+    if(lll == "checklist"){
       isAChecklist = true;
     }else{
       isAChecklist = false;
@@ -257,7 +276,7 @@ Template.tâche.helpers({
     return isAChecklist;
   },
   lists() {
-    let currentT = Session.get('currentTask');
+    let currentT = FlowRouter.getParam("taskId")
     //$ne = tout sauf...
     return Checklists.find( {taskID: currentT, stat: { $ne: 0 } }, { cl: 1 } );
   }
@@ -275,19 +294,11 @@ Template.tâche.events({
     }
   },
   'click .retour': function(){
+    let nom = FlowRouter.getParam("nom");
+    let currentEvent = FlowRouter.getParam('eventId');
     let pathDef = "/evenement/:nom/:eventId"
-    let params  = {nom: Session.get("titreEv"), eventId: Session.get('eventID')};
+    let params  = {nom: nom, eventId: currentEvent};
     let queryParams = {show: "y+e=s", color: "black"};
     FlowRouter.go(pathDef, params, queryParams);
   }
 });
-
-Template.alert.helpers({
-  'lien': function(){
-    let pathDef = "/evenement/:nom/:eventId"
-    let params  = {nom: Session.get("titreEv"), eventId: Session.get('eventID')};
-    let queryParams = {show: "y+e=s", color: "black"};
-    let path = FlowRouter.path(pathDef, params, queryParams);
-    return path;
-  }
-})

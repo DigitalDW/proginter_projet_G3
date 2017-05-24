@@ -20,11 +20,14 @@
 
 <template name="task">
 	<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache {{#if finished}}list-group-item-success{{/if}}">
+	{{#if badge}}
+		<span class="badge badge-default badge-pill">cl</span>
+	{{/if}}
 		<b>{{nom}}</b>
 	</li>
 	<div class="btn-group">
 		<button class="doing btn btn-warning"><b>...</b></button>
-		<button class="done btn btn-success">&#9989;</button>
+		<button class="done btn btn-success">&#10003;</button>
 		<button class="delete btn btn-default">&#10060;</button>
 	</div>
 </template>
@@ -78,8 +81,8 @@
 </template>
 
 <template name="tâche">
-	<h1>{{titleT}}</h1>
-	<p>{{descriT}}</p>
+	<h1>{{titleT.nom}}</h1>
+	<p>{{descriT.desc}}</p>
 	{{#if isAChecklist}}
 		<ul class="list-group">
 			{{#each lists}}
