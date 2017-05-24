@@ -9,10 +9,19 @@ import { ReactiveVar } from 'meteor/reactive-var';
 //création de la page de l'événement: on récupère la valeur de la session "titreEv" pour faire correspondre le titre
 Template.evenement.helpers({
   'titreEv': function(){
-    let name = FlowRouter.getParam('nom');
-    Session.set("titreEv", name)
-    let test = Session.get('titreEv');
-    return test;
+    let currentEvent = FlowRouter.getParam('eventId');
+    let name = Events.findOne( { _id: currentEvent } );
+    return name;
+  },
+  'descEv': function(){
+    let currentEvent = FlowRouter.getParam('eventId');
+    let descEv = Events.findOne( { _id: currentEvent } );
+    return descEv;
+  },
+  'date': function(){
+    let currentEvent = FlowRouter.getParam('eventId');
+    let dateEv = Events.findOne( { _id: currentEvent } );
+    return dateEv;
   },
   tasks() {
     let currentEvent = FlowRouter.getParam('eventId');

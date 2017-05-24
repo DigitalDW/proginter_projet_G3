@@ -1,5 +1,11 @@
 <template name="evenement">
-	<h1>{{titreEv}}</h1>
+	<h1>{{titreEv.name}}</h1>
+	<p>{{descEv.desc}}</p>
+	<br>
+	<h4>Date</h4>
+	<p>{{date.date}}</p>
+	<br>
+	<h4>Tâches</h4>
 	<br>
 	<ul class="list-group">
 		{{#each tasks}}
@@ -12,7 +18,7 @@
 
 <template name="task">
 	<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache {{#if finished}}list-group-item-success{{/if}}">
-	<b>{{nom}}</b>
+		<b>{{nom}}</b>
 	</li>
 	<div class="btn-group">
 		<button class="doing btn btn-warning"><b>...</b></button>

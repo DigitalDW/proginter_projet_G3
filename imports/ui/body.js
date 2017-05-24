@@ -32,15 +32,21 @@ Template.formulaire.events({
     event.preventDefault();
 
     const target = event.target;
-    const name = target.text.value; // récupération du nom de l'événement
+    const name = target.text1.value;
+    const desc = target.text2.value;
+    const date = target.text3.value; 
 
     // appel de l'objet BD pour insérer l'événement
     if(name != ""){
       evenementID = Events.insert({
         name,
+        desc,
+        date
       });
       console.log(event);
-      target.text.value = '';
+      target.text1.value = '';
+      target.text2.value = '';
+      target.text3.value = '';
 
       //création d'une session pour "importer" la valeur du nom de l'événement dans le titre de la page
       Session.set('titreEv', name);
