@@ -6,6 +6,14 @@ import './event.html';
 
 import { ReactiveVar } from 'meteor/reactive-var';
 
+Template.evenement.onCreated(function(){
+  let ev = FlowRouter.getParam('eventId');
+  console.log(ev);
+  if( Events.find( { _id: ev } ).fetch() == false){
+    alert("L'événement que vous cherchez à accèder n'existe plus");
+    FlowRouter.go("/");
+  }
+});
 //création de la page de l'événement: on récupère la valeur de la session "titreEv" pour faire correspondre le titre
 Template.evenement.helpers({
   'titreEv': function(){
