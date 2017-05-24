@@ -8,7 +8,6 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 Template.evenement.onCreated(function(){
   let ev = FlowRouter.getParam('eventId');
-  console.log(ev);
   if( Events.findOne( { _id: ev } ) == false){
     alert("L'événement que vous cherchez à accèder n'existe plus");
     FlowRouter.go("/");
@@ -206,7 +205,6 @@ Template.formulaire2.events({
       //ajouter les elements clx à la base
       for(let i=0;i<counter;i++){
         if(document.getElementById("cl"+i).value !== null){
-          console.log("hey");
           let cl = document.getElementById("cl"+i).value;
           Checklists.insert({
             cl,
@@ -265,7 +263,6 @@ Template.tâche.helpers({
   },
   isAChecklist: function(){
     let currTask = FlowRouter.getParam('taskId');
-    console.log(currTask)
     let taskType = Tasks.findOne( { _id: currTask } );
     let lll = taskType.type;
     if(lll == "checklist"){

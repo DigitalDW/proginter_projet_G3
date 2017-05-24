@@ -16,7 +16,6 @@ import { ReactiveVar } from 'meteor/reactive-var';
 //événement du click sur le bouton -> effacer le header actuel et afficher l'autre header
 Template.main.events({
   'click button': function(){
-    console.log("You clicked on the 1st button");
     FlowRouter.go('form');
   }
 });
@@ -43,7 +42,6 @@ Template.formulaire.events({
         desc,
         date
       });
-      console.log(event);
       target.text1.value = '';
       target.text2.value = '';
       target.text3.value = '';
