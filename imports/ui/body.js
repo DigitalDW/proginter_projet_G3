@@ -1,3 +1,5 @@
+//importation des plugins et des collections
+
 import { Template } from 'meteor/templating';
  
 import { Events } from '../api/event.js';
@@ -12,49 +14,55 @@ import './event.js';
 
 import { ReactiveVar } from 'meteor/reactive-var';
 
-//j'ai enlevé les helpers car les codes n'étaient jamais utilisés de façon réactive, donc aucun intérêt de les définir dans le JS
-//événement du click sur le bouton -> effacer le header actuel et afficher l'autre header
+//événement du click sur le bouton -> redirige vers localhost:3000/formulaire
 Template.main.events({
   'click button': function(){
     FlowRouter.go('form');
   }
 });
-var evenementID;
-var taskID;
-//événement sur le deuxième header + ajouter un événement à la BD
-//@Radisa: events sert à ajouter des events (donc des comportements, comme un addEventListener) à un template
+
+//événement sur le template "formulaire"
 Template.formulaire.events({
   'click .end': function(){
     FlowRouter.go('home');
-  }, // expliquer cette construction ci-dessous. --> la même que le tutoriel officiel de meteor
+  },
+  //emploi de la méthode "subit" pour soumettre un formulaire
   'submit .new-event'(event) {
+    //empêche le comportement par défaut
     event.preventDefault();
 
+    //récupération des valeurs des inputs
     const target = event.target;
     const name = target.text1.value;
     const desc = target.text2.value;
     const date = target.text3.value; 
 
-    // appel de l'objet BD pour insérer l'événement
-    if(name != ""){
+    //création d'une variable pour récupérer l'ID de l'événement lors de sa création et son ajout dans la base
+    let evenementID;
+
+    // vérification: est-ce que l'utiliateur remplis tous les champs obligatoires
+    if(name != "" && date != ""){
+      //ajout de l'événement si c'est le cas
+      //l'événement a un nom, une description (si l'utilisateur le souhaite) et une date
       evenementID = Events.insert({
         name,
         desc,
         date
       });
+
+      //réinitiallisation des inputs
       target.text1.value = '';
       target.text2.value = '';
       target.text3.value = '';
 
-      //création d'une session pour "importer" la valeur du nom de l'événement dans le titre de la page
-      Session.set('titreEv', name);
-
+      //création d'un lien vers l'événement créé
       let pathDef = "/evenement/:nom/:eventId"
       let params  = {nom: name, eventId: evenementID};
       let queryParams = {show: "y+e=s", color: "black"};
       FlowRouter.go(pathDef, params, queryParams);
     }else{
-      alert("veuillez remplir le champ")
+      //alert si l'utilisateur n'a pas remplis tout les champs obligatoires
+      alert("veuillez remplir les champs obligatoires")
     }
   },
 });

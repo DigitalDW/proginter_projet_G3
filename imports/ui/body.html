@@ -1,29 +1,32 @@
-<!-- création des templates -->
+<!-- Création des deux premiers templates -->
+<!-- Template "main", page d'acceuil, contient un titre, une description et un bouton -->
 <template name="main">
 	<h1>Description</h1>
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et velit voluptatem ad tempora quia incidunt nisi repellat in ipsa praesentium dolor deserunt suscipit non expedita, debitis nobis iusto dolore delectus.</p>
 	<button class="btn btn-primary">Créer un événement</button>
 </template>
 
+<!-- formulaire de création d'un événement -->
 <template name="formulaire">
 	<h1>Ajouter un évenement</h1>
 	<p>Vous voulez créer un événement et gérer son organisation? Rien de plus simple! Il suffit d'un nom! Entrez un nom et appuyez sur la touche "Entrée" pour créer votre propre événement!</p>
+	<p style="font-size:12px;">* champs obligatoires</p>
 	<h3>Entrez le nom</h3>
 	<form class="new-event">
 	<!-- mise  en forme des inputs -->
 		<div class="form-group">
-    		<label for="addevent">Nom de l'évènement</label>
-    		<input type="text" name="text1" class="form-control" id="addevent" placeholder="Type to add a new event">
+    		<label for="addevent">Nom de l'évènement *</label>
+    		<input type="text" name="text1" class="form-control" id="addevent" placeholder="Type title">
   		</div>
   		<h3>Entrez une description</h3>
   		<div class="form-group">
     		<label for="addevent">Description de l'évènement</label>
-    		<input type="text" name="text2" class="form-control" id="addevent" placeholder="Type to add a new event">
+    		<input type="text" name="text2" class="form-control" id="addevent" placeholder="Type a description">
   		</div>
   		<h3>Date</h3>
   		<div class="form-group">
-    		<label for="addevent">Description de l'évènement</label>
-    		<input type="date" name="text3" class="form-control" id="addevent" placeholder="Type to add a new event">
+    		<label for="addevent">Date de l'évènement *</label>
+    		<input type="date" name="text3" class="form-control" id="addevent" placeholder="date">
   		</div>
      	<button class="btn btn-success">confirmer</button>
      </form>

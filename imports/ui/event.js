@@ -6,6 +6,8 @@ import './event.html';
 
 import { ReactiveVar } from 'meteor/reactive-var';
 
+//essai d'ajout d'une fonction: rediriger l'utilisateur s'il entre un lien qui fait référence à un événement qui n'existe plus
+//ne fonctionne pas
 Template.evenement.onCreated(function(){
   let ev = FlowRouter.getParam('eventId');
   if( Events.findOne( { _id: ev } ) == false){
@@ -13,12 +15,15 @@ Template.evenement.onCreated(function(){
     FlowRouter.go("/");
   }
 });
-//création de la page de l'événement: on récupère la valeur de la session "titreEv" pour faire correspondre le titre
+
+//création de la page de l'événement:
+//on récupère les données entrées dans l'url pour afficher les éléments correspodant
+//à l'id de l'événement en cours
 Template.evenement.helpers({
   'titreEv': function(){
-    let nom = FlowRouter.getParam("nom");
-    Session.set("titreEv", nom);
+    //récupérer le paramètre "eventId" dans l'url
     let currentEvent = FlowRouter.getParam('eventId');
+    //recherche dans la BD le nom correspondant et le retourner
     let name = Events.findOne( { _id: currentEvent } );
     return name;
   },
@@ -34,13 +39,16 @@ Template.evenement.helpers({
   },
   tasks() {
     let currentEvent = FlowRouter.getParam('eventId');
-    Session.set("eventID", currentEvent);
+    //cette fois on cherche dans la base "Tasks" pour récupérer les tâches donc la forreign key correspond à l'id de l'événement
+    //on vérifie aussi si le statut "finished" est True ou False
+    //s'il est false, on affiche la tâche, sinon on ne la récupère pas
     return Tasks.find( {fk: currentEvent, finished: false }, { nom: 1 } );
   }
 });
 
 //events du template evenement
 Template.evenement.events({
+  //lien vers le formulaire2
   'click .bt1': function(){
     let nom = FlowRouter.getParam("nom");
     let currentEvent = FlowRouter.getParam('eventId');
@@ -48,10 +56,13 @@ Template.evenement.events({
     let params  = {nom: nom, eventId: currentEvent };
     let queryParams = {show: "y+e=s", color: "black"};
     FlowRouter.go(pathDef, params, queryParams);
+    //set d'un compteur à 1
     Session.set("counter",1);
   },
   'click .bt2': function(event){
     event.preventDefault();
+    //création d'un bloc qui apparaît lors d'un click sur le bouton "partager"
+    //le bloc contient du texte et le lien de la page
     let nom = FlowRouter.getParam("nom");
     let currentEvent = FlowRouter.getParam('eventId');
     let pathDef = "/evenement/:nom/:eventId"
@@ -72,24 +83,23 @@ Template.evenement.events({
     di.appendChild(al);
     $(".alert").alert();
   },
+  //change le statut "checked" d'une tâche
   'click .doing': function(){
     Meteor.call('tasks.checked', this._id, !this.checked);
-
   },
+  //change le statut "finished" d'une tâhce
   'click .done': function(){
     Meteor.call('tasks.finish', this._id);
   },
+  //supprime la tâche après avoir demandé confirmation auprès de l'utilisateur
   'click .delete': function(){
     let sur = confirm("Êtes-vous sûr de vouloir supprimer cette tâche? L'action est irréveressible");
     if(sur == true){
       Meteor.call('tasks.remove', this._id);
     }
   },
+  //au clic sur une tâche, aller un lien correspondant
   'click .list-group-item': function(){
-    Session.set("currentTaskName",this.nom);
-    Session.set("currentTaskDesc",this.desc);
-    Session.set("currentTaskType",this.type);
-    Session.set("currentTask",this._id);
     let nom = FlowRouter.getParam("nom");
     let currentEvent = FlowRouter.getParam('eventId');
     let pathDef = "/tache/:nom/:eventId/:taskId"
@@ -99,18 +109,21 @@ Template.evenement.events({
   }
 });
 
+//lors de la création du formulaire2, set et créer une variable "checklisted"
 Template.formulaire2.onCreated(function(){
   this.checklisted = new ReactiveVar( false );
   Session.set('checklisted',false);
 });
 
+//helpers de formulaire2
 Template.formulaire2.helpers({
   checklisted: function(){
     return Template.instance().checklisted.get();
   }
 })
-//formulaire d'ajout de tâche, formulation similaire mais différente de l'ajout d'un event à la BD
+//events
 Template.formulaire2.events({
+  //si l'utilisateur choisi "checklist", le programme affiche les inputs et les boutons correspondant
   'change select': function(event,template){
     if( $(event.target).val() == "checklist"){
       template.checklisted.set(true);
@@ -118,15 +131,15 @@ Template.formulaire2.events({
     }else{
       template.checklisted.set(false);
       Session.set('checklisted',false);
+      Session.set("counter",1);
     }
   },
+  //ajout d'un input lors du clic sur le bouton "+"
   'click .plus': function(event){
     index = Session.get("counter");
     event.preventDefault();
 
-    // J'ai changé le nom de ces 2 variables pour que ça soit plus clair pour moi
-    // 
-
+    //structure précédamment expliquée: un input et un span dans une div
     let input = document.createElement("input");
     let span = document.createElement('span');
     let br = document.createElement("br");
@@ -138,9 +151,7 @@ Template.formulaire2.events({
     
     span.setAttribute('class', "btn btn-default input-group-addon minus");
     span.setAttribute('data-id', "cl" + index);
-    // span.dataset.id = 'cl' + index;
     span.textContent = "-";
-    // input.get
   
     champs.getElementsByTagName('div')[0].appendChild(input);
     champs.getElementsByTagName('div')[0].appendChild(span);
@@ -151,8 +162,7 @@ Template.formulaire2.events({
 // ".minus".addEventListener('click', function(event) {})
   'click .minus': function(event) {
       // quand on clique sur une classe "minus", enlever l'input de l'HTML en concordance avec son data-id
-      // c'est bien ta logique, non??
-      let element = event.target.dataset.id; // @me : event.target se réfère à l'élément cliqué (--> <input cata-id="cl0">)
+      let element = event.target.dataset.id; // event.target se réfère à l'élément cliqué (--> <input cata-id="cl0">)
 
       let inputASuppr = document.querySelector('#' + element); // document.getElementById('cl0') ligne 51 event.html;
       let inputParent = inputASuppr.parentNode; // je récupère le parent (l'élément au dessus)
@@ -161,6 +171,7 @@ Template.formulaire2.events({
       
       inputParent.removeChild(inputASuppr); // idem
 
+      //réducation du compteur
       Session.set("counter", Session.get("counter")-1);
       
   },
@@ -178,8 +189,8 @@ Template.formulaire2.events({
     let fk = FlowRouter.getParam('eventId');;
     let checked = false;
     let finished = false;
-// condition pour empêcher la mise des données vides dans la DB 
-// else : executer ce qui suit (ajout in DB)
+    // condition pour empêcher la mise des données vides dans la DB 
+    // else : executer ce qui suit (ajout in DB)
     //ajout à la BD de la tâche
     if(nom != ""){
       taskID = Tasks.insert({
@@ -204,14 +215,12 @@ Template.formulaire2.events({
       inputs.forEach((d,i) => d.id="cl"+i);
       //ajouter les elements clx à la base
       for(let i=0;i<counter;i++){
-        if(document.getElementById("cl"+i).value !== null){
-          let cl = document.getElementById("cl"+i).value;
-          Checklists.insert({
-            cl,
-            stat,
-            taskID
-          });
-        }
+        let cl = document.getElementById("cl"+i).value;
+        Checklists.insert({
+          cl,
+          stat,
+          taskID
+        });
       }
     }
 
@@ -224,8 +233,8 @@ Template.formulaire2.events({
     Session.set('checklisted',false);
     Session.set("counter", 1);
 
-// on confirme que la tâche a bien été ajoutée à la DB
-      alert("La tâche " + nom.toLowerCase() + " a été ajoutée ! \nAjouter une autre ou retour");
+    // on confirme que la tâche a bien été ajoutée à la DB
+    alert("La tâche " + nom.toLowerCase() + " a été ajoutée ! \nAjouter une autre ou retour");
   }else{
     alert("il manque un nom");
   }
@@ -249,7 +258,8 @@ Template.formulaire2.events({
   }
 });
 
-
+//helpers de "tâche"
+//même construction que les helpers d'"evenement"
 Template.tâche.helpers({
   'titleT': function(){
     let currTask = FlowRouter.getParam('taskId');
@@ -261,17 +271,19 @@ Template.tâche.helpers({
     let descT = Tasks.findOne( { _id: currTask } );
     return descT;
   },
+  //Si c'est une checklist, afficher les élément de la checklist
   isAChecklist: function(){
     let currTask = FlowRouter.getParam('taskId');
     let taskType = Tasks.findOne( { _id: currTask } );
-    let lll = taskType.type;
-    if(lll == "checklist"){
+    let tType = taskType.type;
+    if(tType == "checklist"){
       isAChecklist = true;
     }else{
       isAChecklist = false;
     }
     return isAChecklist;
   },
+  //récupération des élément de la checklist
   lists() {
     let currentT = FlowRouter.getParam("taskId")
     //$ne = tout sauf...
@@ -285,11 +297,13 @@ Template.tâche.events({
     let nom = this.cl;
     let currentList = this._id;
     let conf = confirm("Vous occupez-vous de l'objet suivant: " + nom + " ?");
-    
+
+    //après confirmation de l'utilisateur, changer le statut de la tâche
     if(conf == true){
       Checklists.update( { _id: currentList }, { $set: { stat: 0 } } );
     }
   },
+  //bouton retour
   'click .retour': function(){
     let nom = FlowRouter.getParam("nom");
     let currentEvent = FlowRouter.getParam('eventId');

@@ -1,3 +1,7 @@
+<!-- second set de templates, liés à l'événement en lui-même -->
+<!-- 1er tempalte: evenement. Page sur laquelle l'utilisateur arrive après avoir créé un
+événement et sur laquelle l'application fonctionne principalement -->
+<!-- Il y a le nom de l'événement, la description, la date et les tâches à réaliser -->
 <template name="evenement">
 	<h1>{{titreEv.name}}</h1>
 	<p>{{descEv.desc}}</p>
@@ -6,6 +10,7 @@
 	<br>
 	<h4>Tâches</h4>
 	<br>
+	<!-- C'est ici qu'on ajoute les tâches dans le template -->
 	<ul class="list-group">
 		{{#each tasks}}
         	{{>task}}
@@ -17,13 +22,18 @@
 	<div id="smt"></div>
 </template>
 
+<!-- template secondaire: task. C'est le template qui sera injecté dans le template "evenement" -->
 <template name="task">
+	<!-- Si la tâche est "checked" alors le fond change -->
 	<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache {{#if finished}}list-group-item-success{{/if}}">
-	{{#if badge}}
-		<span class="badge badge-default badge-pill">cl</span>
-	{{/if}}
+		<!-- Si c'est une checklist, afficher un badge qui dit "cl" -->
+		{{#if badge}}
+			<span class="badge badge-default badge-pill">cl</span>
+		{{/if}}
+		<!-- Le nom de la tâche à proprement parler -->
 		<b>{{nom}}</b>
 	</li>
+	<!-- Groupe de boutons: en cours (orange), fait (vert), supprimer (blanc + croix rouge) -->
 	<div class="btn-group">
 		<button class="doing btn btn-warning"><b>...</b></button>
 		<button class="done btn btn-success">&#10003;</button>
@@ -31,22 +41,27 @@
 	</div>
 </template>
 
+<!-- 2em template: formulaire2. Deuxième formulaire de l'application: ajout de tâches -->
 <template name="formulaire2">
 	<h1>Ajouter une tâche</h1>
 		<form class="new-task">
+			<!-- Bouton pour revenir en arrière -->
 			<button class="end btn btn-primary">Retour</button>
+			<!-- Le nom -->
 			<h4>Entrez le nom de la tâche</h4>
 			<div class="form-group">
 	    		<label for="in1">Nom de la tâche</label>
 	    		<input type="text" name="nomT" class="form-control" id="in1" placeholder="Add a new task">
 	  		</div>
-
+			
+			<!-- La description de la tâche -->
 	  		<h4>Entrez une courte description de la tâche</h4>
 			<div class="form-group">
 	    		<label for="in2">Description</label>
 	    		<input type="text" name="descT" class="form-control" id="in2" placeholder="Task description">
 	  		</div>
 			
+			<!-- Le type -->
 			<h4>Sélectionnez le type de tâche</h4>
 			<select class="form-control input-lg" name="typeT" id="form-type">
 				<option value="normal">simple tâche</option>
@@ -54,67 +69,49 @@
 			</select>
 			<br>
 			
-
+			<!-- Si l'utilisateur choisi "checklist", alors le contenu suivant apparaît -->
 			{{#if checklisted}}
-			<!-- C'est par ici que j'ai essayé de modifier la structure du HTMl,  -->
+				<!-- DIV principal dans laquelle on injectera les inputs au fur-et-à-mesure -->
 				<div id="champs">
+					<!-- Construction des inputs: un input et un span dans une div -->
 					<div>
 						<input type="text" id="cl0" class="cl form-control" placeholder="entrez le nom d'un element">
+						<!-- Le span fait office de bouton -->
+						<!-- Cliquer dessus fait disparaître l'input en question -->
 						<span data-id="cl0" class="btn btn-default minus input-group-addon">-</span><br>
 					</div>
 				</div>
+				<!-- Bouton pour ajouter un input -->
 				<button class="btn btn-primary plus">+</button>
 			{{/if}}
-			<br><br> <!-- décoller le bouton + des boutons de controle  -->
-
-			<div class="container-fluid">
-			<!-- mise sur une ligne des deux boutons et mise en forme-->
-				<div class="row">
-					<button class="effect btn btn-success">Ajouter</button>
-
-					
-				</div>
-			</div>
+			<!-- décoller le bouton + des boutons de controle  -->
+			<br><br>
+			<!-- Bouton pour ajouter la tâche -->
+			<button class="effect btn btn-success">Ajouter</button>
 		</form>
 
 </template>
 
+<!-- Template tâche, affichage d'un tâche sur laquelle l'utilisateur a appuyé -->
 <template name="tâche">
 	<h1>{{titleT.nom}}</h1>
+	<br>
+	<h4>Description</h4>
 	<p>{{descriT.desc}}</p>
+	<!-- S'il s'agit d'un checklist, afficher les élément de la checklist -->
 	{{#if isAChecklist}}
 		<ul class="list-group">
+			<!-- ajout des éléments de la checklist -->
 			{{#each lists}}
 				{{>list}}
 			{{/each}}
 		</ul>
 	{{/if}}
+	<!-- Bouton de retour en arrière -->
 	<button class="btn btn-primary retour">retour</button>
 </template>
 
+<!-- Template "list": sert à récupérer les élément dans la collection "checklist" -->
 <template name="list">
 	<li class="clElement list-group-item">{{cl}}</li>
-</template>
-
-<template name="dropdown">
-	<p>oy m8</p>
-	<p>{{description}}</p>
-		{{#if isAChecklist}}
-			<ul class="list-group">
-				{{#each lists}}
-					{{>list}}
-				{{/each}}
-			</ul>
-		{{/if}}
-</template>
-
-<template name="alert">
-	<div class="alert alert-success" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  			<span aria-hidden="true">&times;</span>
-		</button>
-  		<h4 class="alert-heading">Well done!</h4>
-  		<p>Vous avez blablabla</p>
- 		<p class="mb-0">{{lien}}</p>
-	</div>
 </template>
