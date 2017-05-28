@@ -35,6 +35,7 @@ Template.evenement.helpers({
   'date': function(){
     let currentEvent = FlowRouter.getParam('eventId');
     let dateEv = Events.findOne( { _id: currentEvent } );
+    
     return dateEv;
   },
   tasks() {
@@ -77,7 +78,8 @@ Template.evenement.events({
     bt.setAttribute("data-dismiss","alert");
     al.setAttribute("class","alert alert-info alert-dismissible show");
     al.setAttribute("role","alert");
-    al.innerHTML="Envoyer ce lien aux personnes que vous souhaitez! \t : "+path;
+    //ajout du nom du domaine avant le path du routeur pour que le lien soit complet
+    al.innerHTML="Envoyer ce lien aux personnes que vous souhaitez! \t : "+ window.location.origin + path;
     al.appendChild(br);
     al.appendChild(bt);
     di.appendChild(al);

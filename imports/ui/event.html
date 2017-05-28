@@ -3,10 +3,12 @@
 événement et sur laquelle l'application fonctionne principalement -->
 <!-- Il y a le nom de l'événement, la description, la date et les tâches à réaliser -->
 <template name="evenement">
-	<h1>{{titreEv.name}}</h1>
+<div class="container">
+	<h1>{{titreEv.name}} <button class='bt2 btn btn-primary' id="clickme">Partager l'évènement</button></h1>
 	<p>{{descEv.desc}}</p>
 	<h4>Date</h4>
-	<p>{{date.date}}</p>
+	<p class="badge badge-danger" style="background: tomato">{{date.date}}</p>
+
 	<br>
 	<h4>Tâches</h4>
 	<br>
@@ -16,19 +18,22 @@
         	{{>task}}
       	{{/each}}
 	</ul>
-	<button class="bt1 btn">Ajouter une tâche</button>
-	<button class='bt2 btn' id="clickme">Partager</button>
+	<button class="bt1 btn btn-success">Ajouter une tâche</button>
+	
 	<br><br>
 	<div id="smt"></div>
+	</div>
+
 </template>
 
 <!-- template secondaire: task. C'est le template qui sera injecté dans le template "evenement" -->
 <template name="task">
+<div class="container">
 	<!-- Si la tâche est "checked" alors le fond change -->
 	<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache {{#if finished}}list-group-item-success{{/if}}">
 		<!-- Si c'est une checklist, afficher un badge qui dit "cl" -->
 		{{#if badge}}
-			<span class="badge badge-default badge-pill">cl</span>
+			<span class="badge badge-default badge-pill">checklist</span>
 		{{/if}}
 		<!-- Le nom de la tâche à proprement parler -->
 		<b>{{nom}}</b>
@@ -39,10 +44,12 @@
 		<button class="done btn btn-success">&#10003;</button>
 		<button class="delete btn btn-default">&#10060;</button>
 	</div>
+	</div>
 </template>
 
 <!-- 2em template: formulaire2. Deuxième formulaire de l'application: ajout de tâches -->
 <template name="formulaire2">
+<div class="container">
 	<h1>Ajouter une tâche</h1>
 		<form class="new-task">
 			<!-- Bouton pour revenir en arrière -->
@@ -89,11 +96,13 @@
 			<!-- Bouton pour ajouter la tâche -->
 			<button class="effect btn btn-success">Ajouter</button>
 		</form>
+		</div>
 
 </template>
 
 <!-- Template tâche, affichage d'un tâche sur laquelle l'utilisateur a appuyé -->
 <template name="tâche">
+<div class="container">
 	<h1>{{titleT.nom}}</h1>
 	<br>
 	<h4>Description</h4>
@@ -109,9 +118,12 @@
 	{{/if}}
 	<!-- Bouton de retour en arrière -->
 	<button class="btn btn-primary retour">retour</button>
+	</div>
 </template>
 
 <!-- Template "list": sert à récupérer les élément dans la collection "checklist" -->
 <template name="list">
+<div class="container">
 	<li class="clElement list-group-item">{{cl}}</li>
+	</div>
 </template>
