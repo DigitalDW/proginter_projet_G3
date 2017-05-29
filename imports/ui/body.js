@@ -14,6 +14,13 @@ import './event.js';
 
 import { ReactiveVar } from 'meteor/reactive-var';
 
+
+Template.mainLayout.events({
+  'click .head': function(event){
+    event.preventDefault();
+    FlowRouter.go('home');
+  }
+});
 //événement du click sur le bouton -> redirige vers localhost:3000/formulaire
 Template.main.events({
   'click button': function(){
