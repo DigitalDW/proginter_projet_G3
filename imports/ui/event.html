@@ -31,7 +31,7 @@
 <template name="task">
 	<div class="container">
 		<!-- Si la tâche est "checked" alors le fond change -->
-		<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache {{#if finished}}list-group-item-success{{/if}}">
+		<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache {{#if finished}}list-group-item-success{{/if}}" style="border-radius: 5px;">
 			<!-- Si c'est une checklist, afficher un badge qui dit "cl" -->
 			{{#if badge}}
 				<span class="badge badge-default badge-pill">checklist</span>
@@ -103,7 +103,7 @@
 
 <!-- Template tâche, affichage d'un tâche sur laquelle l'utilisateur a appuyé -->
 <template name="tâche">
-<div class="container">
+<div class="container" style="background: white; border-radius: 5px; padding: 0 10px 10px 10px;">
 	<h2>{{titleT.nom}}</h2>
 	<h4>Description</h4>
 	<p>{{descriT.desc}}</p>
@@ -119,7 +119,7 @@
 	<!-- Bouton de retour en arrière -->
 	<button class="btn btn-primary retour">fermer</button>
 </div>
-<br>
+<br><br>
 </template>
 
 <!-- Template "list": sert à récupérer les élément dans la collection "checklist" -->
