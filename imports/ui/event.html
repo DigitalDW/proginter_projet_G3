@@ -18,6 +18,7 @@
         	{{>task}}
       	{{/each}}
 	</ul>
+	{{> Template.dynamic template=secondary}}
 	<button class="bt1 btn btn-success">Ajouter une tâche</button>
 	<button class='bt2 btn btn-primary' id="clickme">Partager l'évènement</button>
 	<br><br>
@@ -28,22 +29,22 @@
 
 <!-- template secondaire: task. C'est le template qui sera injecté dans le template "evenement" -->
 <template name="task">
-<div class="container">
-	<!-- Si la tâche est "checked" alors le fond change -->
-	<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache {{#if finished}}list-group-item-success{{/if}}">
-		<!-- Si c'est une checklist, afficher un badge qui dit "cl" -->
-		{{#if badge}}
-			<span class="badge badge-default badge-pill">checklist</span>
-		{{/if}}
-		<!-- Le nom de la tâche à proprement parler -->
-		<b>{{nom}}</b>
-	</li>
-	<!-- Groupe de boutons: en cours (orange), fait (vert), supprimer (blanc + croix rouge) -->
-	<div class="btn-group">
-		<button class="doing btn btn-warning"><b>...</b></button>
-		<button class="done btn btn-success">&#10003;</button>
-		<button class="delete btn btn-default">&#10060;</button>
-	</div>
+	<div class="container">
+		<!-- Si la tâche est "checked" alors le fond change -->
+		<li class="list-group-item {{#if checked}}list-group-item-warning{{/if}} tache {{#if finished}}list-group-item-success{{/if}}">
+			<!-- Si c'est une checklist, afficher un badge qui dit "cl" -->
+			{{#if badge}}
+				<span class="badge badge-default badge-pill">checklist</span>
+			{{/if}}
+			<!-- Le nom de la tâche à proprement parler -->
+			<b>{{nom}}</b>
+		</li>
+		<!-- Groupe de boutons: en cours (orange), fait (vert), supprimer (blanc + croix rouge) -->
+		<div class="btn-group">
+			<button class="doing btn btn-warning"><b>...</b></button>
+			<button class="done btn btn-success">&#10003;</button>
+			<button class="delete btn btn-default">&#10060;</button>
+		</div>
 	</div>
 </template>
 
@@ -103,8 +104,7 @@
 <!-- Template tâche, affichage d'un tâche sur laquelle l'utilisateur a appuyé -->
 <template name="tâche">
 <div class="container">
-	<h1>{{titleT.nom}}</h1>
-	<br>
+	<h2>{{titleT.nom}}</h2>
 	<h4>Description</h4>
 	<p>{{descriT.desc}}</p>
 	<!-- S'il s'agit d'un checklist, afficher les élément de la checklist -->
@@ -117,8 +117,9 @@
 		</ul>
 	{{/if}}
 	<!-- Bouton de retour en arrière -->
-	<button class="btn btn-primary retour">retour</button>
-	</div>
+	<button class="btn btn-primary retour">fermer</button>
+</div>
+<br>
 </template>
 
 <!-- Template "list": sert à récupérer les élément dans la collection "checklist" -->
