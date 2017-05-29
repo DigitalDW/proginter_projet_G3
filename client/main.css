@@ -1,6 +1,7 @@
 .btn-group{
 	position:relative;
-	left:30vw;
+	left:40%;
+	right:40%;
 	bottom:37px;
 }
 #alert{

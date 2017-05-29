@@ -4,7 +4,7 @@
 <!-- Il y a le nom de l'événement, la description, la date et les tâches à réaliser -->
 <template name="evenement">
 <div class="container">
-	<h1>{{titreEv.name}} <button class='bt2 btn btn-primary' id="clickme">Partager l'évènement</button></h1>
+	<h1>{{titreEv.name}} </h1>
 	<p>{{descEv.desc}}</p>
 	<h4>Date</h4>
 	<p class="badge badge-danger" style="background: tomato">{{date.date}}</p>
@@ -19,7 +19,7 @@
       	{{/each}}
 	</ul>
 	<button class="bt1 btn btn-success">Ajouter une tâche</button>
-	
+	<button class='bt2 btn btn-primary' id="clickme">Partager l'évènement</button>
 	<br><br>
 	<div id="smt"></div>
 	</div>

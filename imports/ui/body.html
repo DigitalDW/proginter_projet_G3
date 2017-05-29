@@ -1,11 +1,22 @@
 <!-- Création des deux premiers templates -->
 <!-- Template "main", page d'acceuil, contient un titre, une description et un bouton -->
+<template name="mainLayout">
+	<div style="background: #94DAF3; margin: 0% 5% 0% 5%; padding-bottom: 10px;">
+		<header style="background: #23ADDF; width: 100%; color: white; height:80px; font-size: 40px; padding-left: 30px; padding-top: 8px; border-radius: 5px;">Event.Org</header>
+		{{> Template.dynamic template=main}}
+	</div>
+</template>
 <template name="main">
 <div class="container">
-	<h1>Description</h1>
-	<p>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et velit voluptatem ad tempora quia incidunt nisi repellat in ipsa praesentium dolor deserunt suscipit non expedita, debitis nobis iusto dolore delectus.
-  </p>
+	<h1>Accueil</h1>
+	<h3>Bienvenue sur Event.Org!</h3>
+  	<br>
+	<p style="text-align: justify;">
+  		Ce site a pour but de vous aider à organiser vos événements, qu'ils soient privés ou publiques! Créer un événement, ajoutez-y des tâches à réaliser et partager le avec n'importe quelle personne qui doit vous aider dans l'organisation de votre événement! Voyez en temps réel si une tâche est réalisée ou si elle en en cours de réalisation!
+  		<br><br>
+  		<b>N'attendez plus!</b> Votre événement ne va pas s'organiser tout seul!
+  	</p>
+  	<br>
 	<button class="btn btn-primary">Créer un événement</button>
   </div>
 </template>
@@ -15,13 +26,13 @@
 <template name="formulaire" >
 <div class="container">
 	<h1>Ajouter un évenement</h1>
-	<p>Vous voulez créer un événement et gérer son organisation? Rien de plus simple! Il suffit d'un nom! Entrez un nom et appuyez sur la touche "Entrée" pour créer votre propre événement!</p>
+	<p>Merci d'avoir choisi notre service! Rien de plus simple pour créer un événement! Il suffit d'un nom et d'une date! Une description peut être utile mais n'est pas obligatoire.</p>
 	<p style="font-size:12px; color:tomato">* champs obligatoires</p>
 	<h3>Entrez le nom</h3>
 	<form class="new-event">
 	<!-- mise  en forme des inputs -->
 		<div class="form-group">
-    		<label for="addevent"><span style="color:tomato">Nom de l'évènement *</span></label>
+    		<label for="addevent">Nom de l'évènement <span style="color:tomato">*</span></label>
     		<input type="text" name="text1" class="form-control" id="addevent" placeholder="Type title">
   		</div>
   		<h3>Entrez une description</h3>
@@ -31,7 +42,7 @@
   		</div>
   		<h3>Date</h3>
   		<div class="form-group">
-    		<label for="addevent"><span style="color:tomato">Date de l'évènement *</span></label>
+    		<label for="addevent">Date de l'évènement <span style="color:tomato">*</span></label>
     		<input type="date" name="text3" class="form-control" id="addevent" placeholder="date">
   		</div>
      	<button class="btn btn-success">confirmer</button>
