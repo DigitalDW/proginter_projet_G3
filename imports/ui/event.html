@@ -52,11 +52,12 @@
 <template name="formulaire2">
 <div class="container">
 	<h1>Ajouter une tâche</h1>
+	<p style="font-size:12px; color:tomato">* champs obligatoires</p>
 		<form class="new-task">
 			<!-- Bouton pour revenir en arrière -->
 			<button class="end btn btn-primary">Retour</button>
 			<!-- Le nom -->
-			<h4>Entrez le nom de la tâche</h4>
+			<h4>Entrez le nom de la tâche <span style="color:tomato">*</span></h4>
 			<div class="form-group">
 	    		<label for="in1">Nom de la tâche</label>
 	    		<input type="text" name="nomT" class="form-control" id="in1" placeholder="Add a new task">
